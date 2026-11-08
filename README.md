@@ -2,7 +2,7 @@
 
 **A little clarity for your AI day.** A small, native Mac menu-bar app that brings your AI attention together—across desktop apps and websites.
 
-[Download preview](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview) · [Suggest an idea](https://github.com/krumjahn/ai-usage/issues/new/choose)
+[Download for macOS (.dmg)](https://github.com/krumjahn/ai-usage/releases/download/v0.1.0-preview/AI-Usage-0.1.0-preview.dmg) · [Release notes](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview) · [Suggest an idea](https://github.com/krumjahn/ai-usage/issues/new/choose)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/dashboard-dark.png">
@@ -45,7 +45,7 @@ This measures **active foreground attention**, not tokens, subscription allowanc
 
 ## Try it
 
-macOS 13 or later. The [v0.1.0 preview](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview) is an **ad-hoc signed, unnotarized developer preview**, not a Developer ID release. macOS may block downloaded builds. Source builds are recommended until signing and notarization are available; see [installation notes](docs/INSTALL.md).
+macOS 13 or later. The [v0.1.0 preview](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview) is an **ad-hoc signed, unnotarized developer preview**, not a Developer ID release. macOS may block downloaded builds. Download the universal DMG, drag **AI Usage.app** to **Applications**, eject the disk image, and open the app. See [installation notes](docs/INSTALL.md) for macOS approval steps or building from source.
 
 Launch the app and look for a time such as `0s` or `42m` in the macOS menu bar. Click it to open the dashboard. If the menu bar is crowded, close another menu-bar utility temporarily. Opening AI Usage again also opens its dashboard window.
 

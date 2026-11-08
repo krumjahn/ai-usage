@@ -2,16 +2,26 @@
 
 AI Usage supports macOS 13+. The release archive states its supported processor architectures. The app is a menu-bar utility; it does not need to stay in the Dock.
 
-## Source build (recommended for this preview)
+## Download the DMG
+
+<img src="images/installer.png" width="560" alt="AI Usage disk image with the app and an Applications shortcut">
+
+1. Download [AI-Usage-0.1.0-preview.dmg](https://github.com/krumjahn/ai-usage/releases/download/v0.1.0-preview/AI-Usage-0.1.0-preview.dmg) from the [GitHub release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview). The same DMG supports Apple Silicon and Intel.
+2. Open the DMG and drag **AI Usage.app** onto **Applications**. Quit any running AI Usage instance before replacing it.
+3. Eject the disk image, then open **AI Usage** from Applications.
+4. This preview is ad-hoc signed, **not Developer ID signed or notarized**. macOS may block it. If you trust this project and want to proceed, follow [Apple's per-app approval instructions](https://support.apple.com/en-us/102445): after trying to open it, go to **System Settings → Privacy & Security → Open Anyway** and confirm the app. Do not disable Gatekeeper system-wide. You can also build from source below.
+
+For integrity verification, download `SHA256SUMS.txt` from the same release and compare:
+
+```sh
+shasum -a 256 AI-Usage-0.1.0-preview.dmg
+```
+
+The ZIP remains available as an alternative: download `AI-Usage-0.1.0-preview.zip`, check its checksum, unzip, then move the app to Applications. Both packages contain the same app, with no personal activity history or credentials.
+
+## Source build
 
 Use the build commands in the README. XcodeGen generates the project, Xcode builds it with an ad-hoc signature. There are no third-party Swift packages. Quit the previous instance before launching a different build. Copy your built app to Applications if desired.
-
-## Downloaded preview
-
-1. Download `AI-Usage-0.1.0-preview.zip` and `SHA256SUMS.txt` from the same GitHub release.
-2. Compare `shasum -a 256 AI-Usage-0.1.0-preview.zip` with the published checksum, then unzip it.
-3. Quit any running AI Usage instance before replacing it. Move `AI Usage.app` to Applications and open it.
-4. This preview is not Developer ID signed or notarized. macOS may refuse it. Review the source or build locally; don't disable Gatekeeper system-wide. A properly signed release is planned when a Developer ID certificate is available.
 
 Click the time in the menu bar to see the dashboard. Open the app again to show a window if its menu item is hidden by a crowded menu bar or a notch.
 

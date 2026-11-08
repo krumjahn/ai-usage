@@ -1,3 +1,27 @@
+# DMG packaging validation — 8 November 2026
+
+Added `scripts/package-dmg.sh`, `scripts/dmg-settings.py` and `docs/RELEASING.md`. Updated README and installation instructions to make the DMG the primary download. Existing app sources, installed binary and activity history are untouched. The release tag stays fixed; the DMG packages the original ZIP's identical app.
+
+Input ZIP SHA-256: `7244c5e7c0e20f5ce3aff7b8ab5c602e6bf25742567579f245a706c1f2377c16`, matching the published release asset. Extracted only to a task-specific temporary directory. All six regular app files match after packaging and after copying out to a temporary installation directory. Bundle ID `com.rumjahn.attentionledger`, version `0.1.0` (build 1), minimum macOS `13.0`, architectures `x86_64 arm64`, feedback endpoint empty.
+
+Verification commands:
+
+```sh
+bash -n scripts/package-dmg.sh
+DMGBUILD_BIN=/path/to/venv/bin/dmgbuild scripts/package-dmg.sh "/temporary/AI Usage.app" release/AI-Usage-0.1.0-preview.dmg
+hdiutil verify release/AI-Usage-0.1.0-preview.dmg
+hdiutil attach -readonly -nobrowse -plist release/AI-Usage-0.1.0-preview.dmg
+codesign --verify --deep --strict "/Volumes/AI Usage 0.1.0/AI Usage.app"
+lipo -archs "/Volumes/AI Usage 0.1.0/AI Usage.app/Contents/MacOS/AttentionLedger"
+git diff --check
+```
+
+Disk-image checksums and app signatures passed. Compared SHA-256 manifests of every regular app file against the extracted ZIP and temporary installation copy. Confirmed `Applications` links to `/Applications`, installation/license text is included, and no activity database is packaged. Opened the DMG through Finder and checked the compact layout; corrected the Read Me label spacing. No second collector was launched. Existing app tests were not rerun for this packaging-only change; prior 24 macOS and six API tests passed.
+
+Packaging uses dmgbuild 1.6.7, ds_store 1.3.3 and mac_alias 2.2.3 in a separate virtual environment, with no new app dependencies. Xcode 27.1's hdiutil emits deprecation notices but creates and validates the HFS+/UDZO image successfully. No Developer ID Application certificate is available; the binary remains ad-hoc signed and unnotarized. Clean-machine Gatekeeper behavior, macOS 13 and Intel runtime were not tested. Published release checksums are the authoritative digest for the final DMG.
+
+---
+
 # Menu-bar demo revision — 8 November 2026
 
 Changed `promo/compositions/overview.html` and its opening headline to demonstrate macOS desktop → menu-bar click → native dashboard → click away. Added `Design/GenerateDemoAssets.swift` and `promo/assets/mac/` for reproducible offscreen native desktop assets. Updated the standalone MP4, poster and media documentation. The desktop is staged and the actual dashboard screenshot uses synthetic data.
