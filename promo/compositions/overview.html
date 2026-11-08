@@ -1,33 +1,66 @@
 <template>
 <style>
 #root{position:absolute;inset:0;background:#f7f6f2;color:#252622;font-family:Inter,sans-serif}
-.brand{position:absolute;left:192px;top:142px;font-size:36px;font-weight:600;letter-spacing:-1px}.brand img{display:inline-block;width:48px;height:48px;margin-right:12px;vertical-align:-10px}
-.copy{position:absolute;left:192px;top:340px;width:860px}.copy h1{font-family:'EB Garamond',serif;font-weight:400;letter-spacing:-3px;font-size:110px;line-height:1.02;margin:0;white-space:pre-line}.copy p{font-size:32px;color:#62675a;margin-top:32px;line-height:1.5}
-.device{position:absolute;left:1180px;top:156px;width:470px}.device img{display:block;width:470px;border:1px solid #dedfd6;border-radius:18px}.sample{position:absolute;left:1180px;top:888px;width:470px;text-align:center;font-size:28px;color:#62675a}
-.foot{position:absolute;left:192px;top:884px;font-size:28px;color:#62675a}
+.headline{position:absolute;left:192px;top:97px;font-size:48px;font-weight:500;letter-spacing:-1.8px;line-height:1.15;margin:0}
+#mac-stage{position:absolute;left:160px;top:192px;width:1600px;height:744px;overflow:hidden;border-radius:17px;border:1px solid #b9c5c9;box-shadow:0 20px 55px #1a2a3520;isolation:isolate}
+#mac-camera{position:absolute;inset:0;transform-origin:1276px 0}
+.wallpaper{position:absolute;inset:0;width:1600px;height:744px;background:#c8d7df}
+.menu{position:absolute;left:0;top:0;width:1600px;height:32px;z-index:2}
+#selected-status{position:absolute;left:1230px;top:1px;width:92px;height:30px;border-radius:5px;background:#17233125;z-index:3}
+.dock{position:absolute;left:640px;bottom:20px;width:320px;height:76px;display:flex;align-items:center;justify-content:center;gap:13px;border:1px solid #ffffff80;border-radius:21px;background:#e7edf0a8;box-shadow:0 4px 14px #122c4d12}
+.dock img{width:58px;height:58px;object-fit:contain}
+#popover-anchor{position:absolute;left:1116px;top:43px;width:320px;z-index:4}
+#popover-panel{position:relative;transform-origin:50% 0;box-shadow:0 10px 30px #11243a32;border-radius:11px}
+#popover-panel::before{content:"";position:absolute;left:152px;top:-8px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid white}
+#popover-panel img{display:block;width:320px;height:473px;border-radius:11px;outline:1px solid #17233124}
+#mac-cursor{position:absolute;left:0;top:0;width:28px;height:40px;z-index:8;transform-origin:5px 5px}
+#mac-cursor img{position:absolute;left:-5px;top:-5px;width:28px;height:40px}
+.click-ring{position:absolute;width:36px;height:36px;z-index:6}
+.click-ring span{display:block;width:36px;height:36px;border:2px solid #244356;border-radius:50%}
+#open-click{left:1258px;top:0}#close-click{left:982px;top:452px}
+.footer{position:absolute;left:192px;right:192px;top:982px;display:flex;justify-content:space-between;font-size:28px;color:#62675a;line-height:1.3}
 </style>
-<div data-hf-id="hf-e804" id="root" data-composition-id="overview" data-hold="Read the real interface" data-width="1920" data-height="1080">
-<div data-hf-id="hf-51a3" id="overview-brand" class="clip brand" data-start="0" data-duration="14" data-track-index="1"><img src="assets/app-icon.png" alt="">AI Usage</div>
-<div data-hf-id="hf-3v9g" id="overview-first" class="clip copy" data-start="0" data-duration="4.5" data-track-index="2" data-beat="The product"><div data-hf-id="hf-o4w6" id="overview-first-inner"><h1 data-hf-id="hf-t2ze" data-var-text="headline">Your AI day.
-In one glance.</h1><p data-hf-id="hf-rzda">A little clarity, right in your menu bar.</p></div></div>
-<div data-hf-id="hf-h50y" id="overview-second" class="clip copy" data-start="4.5" data-duration="4.5" data-track-index="2" data-beat="Combined sources"><div data-hf-id="hf-100q" id="overview-second-inner"><h1 data-hf-id="hf-2dfe">Web. Desktop.
-One total.</h1><p data-hf-id="hf-5xei">Every tool, with a simple source split.</p></div></div>
-<div data-hf-id="hf-mh9h" id="overview-third" class="clip copy" data-start="9" data-duration="5" data-track-index="2" data-beat="A wider view"><div data-hf-id="hf-twvf" id="overview-third-inner"><h1 data-hf-id="hf-cyta">A week of AI.
-A clearer view.</h1><p data-hf-id="hf-718z">Free. Open source. Made for Mac.</p></div></div>
-<div data-hf-id="hf-ye6d" id="overview-today" class="clip device" data-start="0" data-duration="9" data-track-index="3"><img data-hf-id="hf-q3ih" id="overview-today-image" src="assets/dashboard.png" alt="AI Usage today dashboard, demo data"></div>
-<div data-hf-id="hf-i9sj" id="overview-week" class="clip device" data-start="9" data-duration="5" data-track-index="3"><img data-hf-id="hf-ibnp" id="overview-week-image" src="assets/week.png" alt="AI Usage past seven days, demo data"></div>
-<div data-hf-id="hf-wn4y" id="overview-sample" class="clip sample" data-start="0" data-duration="14" data-track-index="4">Actual app · Demo data</div>
-<div data-hf-id="hf-3k7g" id="overview-footer" class="clip foot" data-start="0" data-duration="14" data-track-index="4">Local activity. No account. Yours.</div>
+<div id="root" data-composition-id="overview" data-width="1920" data-height="1080" data-hold="Read the native dashboard after it opens">
+<div id="intro-title" class="clip headline" data-start="0" data-duration="3.8" data-track-index="2"><div id="intro-copy" data-var-text="headline">Your AI time lives in the menu bar.</div></div>
+<div id="open-title" class="clip headline" data-start="3.8" data-duration="6.4" data-track-index="2"><div id="open-copy">One click. Your AI tools, together.</div></div>
+<div id="close-title" class="clip headline" data-start="10.2" data-duration="3.8" data-track-index="2"><div id="close-copy">A little clarity. Then back to your day.</div></div>
+<div id="mac-stage" class="clip" data-start="0" data-duration="14" data-track-index="1" data-layout-allow-overlap="true">
+  <div id="mac-camera" data-layout-allow-overflow="true">
+    <svg class="wallpaper" viewBox="0 0 1600 744" aria-label="Original abstract desktop wallpaper"><path d="M-80 760C240 550 350 45 800 170S1200 700 1680 380V800H-80Z" fill="#93afb9"/><path d="M-60 820C330 470 520 280 870 385S1250 800 1700 540V820Z" fill="#6c8f9b"/><path d="M450 820C830 580 1110 530 1700 700V820Z" fill="#527582"/></svg>
+    <img class="menu" src="assets/mac/menu-bar.png" alt="macOS Finder menu bar with AI Usage time, 2 hours 14 minutes">
+    <div id="selected-status" class="clip" data-start="2.2" data-duration="8.2" data-track-index="3"></div>
+    <div class="dock" aria-label="macOS Dock"><img src="assets/mac/finder.png" alt="Finder"><img src="assets/mac/safari.png" alt="Safari"><img src="assets/mac/notes.png" alt="Notes"><img src="assets/mac/settings.png" alt="System Settings"></div>
+    <div id="popover-anchor" class="clip" data-start="2.3" data-duration="8.1" data-track-index="4" data-beat="Click opens the menu-bar panel"><div id="popover-panel"><img src="assets/dashboard.png" alt="Actual AI Usage native dashboard with illustrative data"></div></div>
+    <div id="open-click" class="clip click-ring" data-start="2.2" data-duration="0.55" data-track-index="5"><span id="open-ring"></span></div>
+    <div id="close-click" class="clip click-ring" data-start="10.2" data-duration="0.55" data-track-index="5"><span id="close-ring"></span></div>
+    <div id="mac-cursor"><img src="assets/mac/cursor.png" alt="macOS pointer"></div>
+  </div>
+</div>
+<div id="demo-footer" class="clip footer" data-start="0" data-duration="14" data-track-index="6"><span>AI Usage · Free & open source</span><span>Staged macOS desktop · Sample data</span></div>
 </div>
 <script>
 const tl=gsap.timeline({paused:true});
-tl.fromTo('#overview-first-inner',{y:18,opacity:0.8},{y:0,opacity:1,duration:0.65,ease:'power2.out'},0);
-tl.fromTo('#overview-today-image',{y:16},{y:0,duration:0.8,ease:'power2.out'},0);
-tl.to('#overview-first-inner',{opacity:0,duration:0.2},4.25);
-tl.fromTo('#overview-second-inner',{y:18,opacity:0},{y:0,opacity:1,duration:0.55,ease:'power2.out'},4.5);
-tl.to('#overview-second-inner',{opacity:0,duration:0.2},8.75);
-tl.fromTo('#overview-third-inner',{y:18,opacity:0},{y:0,opacity:1,duration:0.55,ease:'power2.out'},9);
-tl.fromTo('#overview-week-image',{opacity:0.65,y:8},{opacity:1,y:0,duration:0.45,ease:'power2.out'},9);
+// The native cursor and dashboard share the camera's coordinate space.
+// Two explicit clicks: the real time-only status item, then the empty desktop.
+tl.set('#mac-cursor',{x:860,y:450,scale:1},0);
+tl.to('#mac-cursor',{x:1276,y:18,duration:1.15,ease:'power2.inOut'},0.95);
+tl.to('#mac-cursor',{scale:0.84,duration:0.08},2.2);
+tl.to('#mac-cursor',{scale:1,duration:0.13},2.28);
+tl.fromTo('#open-ring',{scale:0.4,opacity:0.8},{scale:1.7,opacity:0,duration:0.5,ease:'power2.out'},2.2);
+tl.fromTo('#popover-panel',{y:-5,scale:0.985,opacity:0},{y:0,scale:1,opacity:1,duration:0.24,ease:'power3.out'},2.3);
+tl.fromTo('#mac-camera',{scale:1},{scale:1.35,duration:1.2,ease:'power2.inOut'},3);
+tl.to('#mac-cursor',{x:1060,y:200,duration:0.7,ease:'power2.inOut'},3.15);
+tl.to('#intro-copy',{opacity:0,duration:0.15},3.6);
+tl.fromTo('#open-copy',{opacity:0},{opacity:1,duration:0.2},3.8);
+tl.to('#mac-cursor',{x:1000,y:470,duration:0.7,ease:'power2.inOut'},9.4);
+tl.to('#mac-cursor',{scale:0.84,duration:0.08},10.2);
+tl.to('#mac-cursor',{scale:1,duration:0.13},10.28);
+tl.fromTo('#close-ring',{scale:0.4,opacity:0.8},{scale:1.7,opacity:0,duration:0.5,ease:'power2.out'},10.2);
+tl.to('#popover-panel',{opacity:0,duration:0.15},10.22);
+tl.to('#mac-camera',{scale:1,duration:1.2,ease:'power2.inOut'},10.6);
+tl.to('#open-copy',{opacity:0,duration:0.15},10);
+tl.fromTo('#close-copy',{opacity:0},{opacity:1,duration:0.2},10.2);
+tl.to('#mac-cursor',{x:950,y:500,duration:0.6,ease:'power2.inOut'},11.9);
 window.__timelines.overview=tl;
 </script>
 </template>

@@ -1,3 +1,21 @@
+# Menu-bar demo revision — 8 November 2026
+
+Changed `promo/compositions/overview.html` and its opening headline to demonstrate macOS desktop → menu-bar click → native dashboard → click away. Added `Design/GenerateDemoAssets.swift` and `promo/assets/mac/` for reproducible offscreen native desktop assets. Updated the standalone MP4, poster and media documentation. The desktop is staged and the actual dashboard screenshot uses synthetic data.
+
+```sh
+swift Design/GenerateDemoAssets.swift
+npx --yes hyperframes@0.8.223 check promo --json
+npx --yes hyperframes@0.8.223 snapshot promo --review --composition overview
+cd promo
+npx --yes hyperframes@0.8.223 render --output ../docs/media/ai-usage-demo.mp4 --fps 30 --quality looks
+cd ..
+ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate -show_entries format=duration,size -of json docs/media/ai-usage-demo.mp4
+```
+
+Check passed with zero errors/warnings; intentional silence is informational. Visually reviewed opening-click frames, settled beats, transition seams and phone-size sheets; preview opened in Chrome. Final encoding and a representative encoded frame checked. Native application tests were not rerun because application source is unchanged. Installed binary, collector, preferences and production activity history are untouched. This is a staged demonstration, not a fresh runtime test of the menu-bar application. Website deployment remains disabled.
+
+---
+
 # GitHub-first launch update — 8 November 2026
 
 Website publication is deferred at the maintainer's request. GitHub Pages is unpublished, its workflow disabled and its automatic push trigger removed, and the repository homepage cleared. Website source remains available for later work. The README now presents screenshots and a standalone demo directly on GitHub; the same MP4 remains attached to the preview release.

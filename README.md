@@ -27,7 +27,7 @@
 
 </details>
 
-The screenshots show the real native interface with synthetic records. The 14-second silent demo uses the same sample data. Editable video source is in `promo/`; no website is needed to view or share these assets.
+The screenshots show the real native interface with synthetic records. The 14-second silent demo shows a staged macOS desktop: click the menu-bar time, open the dashboard, then click away. It uses the same sample data. Editable video source is in `promo/`; no website is needed to view or share these assets.
 
 ## What it does
 

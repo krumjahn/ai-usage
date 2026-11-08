@@ -58,4 +58,4 @@ Local Wrangler binds its own development database under `.wrangler/`; it never u
 
 ## Rebuild the demo
 
-From `promo/`, use the pinned scripts in `package.json`: `npm run check`, `npm run dev`, and `npm run render -- --output ../website/public/assets/demo.mp4`. The 14-second silent film uses actual native views with synthetic records. Regenerate screenshots first with `scripts/screenshots.sh`; copy the chosen dashboard/week images into `promo/assets/` and website assets. `promo/REVIEW.md` records visual checks.
+From `promo/`, use the pinned scripts in `package.json`: `npm run check`, `npm run dev`, and `npm run render -- --output ../docs/media/ai-usage-demo.mp4`. The 14-second silent film stages a macOS menu-bar click using actual native views with synthetic records. Regenerate its desktop assets from the repository root with `swift Design/GenerateDemoAssets.swift`. Regenerate screenshots first with `scripts/screenshots.sh`; copy the chosen dashboard/week images into `promo/assets/` and website assets. `promo/REVIEW.md` records visual checks.
