@@ -12,7 +12,7 @@ enum ToolPeriod: String, CaseIterable { case today = "Today", week = "Last 7 day
     }
 }
 
-private let ledgerTeal = Color(red: 0.12, green: 0.52, blue: 0.52)
+private let panelWidth: CGFloat = 320
 
 struct MenuBarUI: View {
     @ObservedObject var model: LedgerModel
@@ -30,7 +30,7 @@ struct MenuBarUI: View {
         model.week.reduce(into: [:]) { $0.merge($1.1.tools, uniquingKeysWith: +) }
     }
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading, spacing: 10) {
             header
             if let problem = model.problem { Text(problem).foregroundStyle(.red).font(.caption) }
             switch nav.page {
@@ -39,66 +39,72 @@ struct MenuBarUI: View {
             case .settings: PrivacySettings(model: model, collector: collector)
             }
         }
-        .padding(18).frame(width: 420).fixedSize(horizontal: false, vertical: true)
+        .padding(16).frame(width: panelWidth).fixedSize(horizontal: false, vertical: true)
         .background(Color(nsColor: .windowBackgroundColor))
-        .tint(ledgerTeal)
+        .tint(.primary)
     }
 
     private var header: some View {
-        HStack(spacing: 9) {
+        HStack(spacing: 6) {
             if nav.page == .dashboard {
-                Image(systemName: "chart.bar.fill").foregroundStyle(.white)
-                    .frame(width: 31, height: 31).background(ledgerTeal.gradient, in: RoundedRectangle(cornerRadius: 8))
-                Text("AI Usage").font(.system(size: 19, weight: .semibold))
+                Text("AI Usage").font(.system(size: 13, weight: .semibold))
                 Spacer()
-                HStack(spacing: 5) {
-                    Circle().fill(tracking == "Tracking" ? Color.green : Color.secondary).frame(width: 6, height: 6)
-                    Text(tracking).font(.caption.weight(.medium))
-                }.padding(.horizontal, 8).padding(.vertical, 4).background(.primary.opacity(0.055), in: Capsule())
-                Button { nav.page = .settings } label: { Image(systemName: "gearshape").frame(width: 25, height: 25) }
-                    .buttonStyle(.plain).accessibilityLabel("Settings").help("Settings")
+                Button { nav.page = .settings } label: {
+                    Image(systemName: "gearshape").frame(width: 22, height: 22)
+                }
+                .buttonStyle(.plain).foregroundStyle(.secondary)
+                .accessibilityLabel("Settings").help("Settings")
             } else {
-                Button { nav.openDashboard() } label: { Image(systemName: "chevron.left").frame(width: 23, height: 25) }
-                    .buttonStyle(.plain).accessibilityLabel("Back to dashboard")
-                Text(nav.page == .tools ? "All AI Tools" : "Settings")
-                    .font(.title3.weight(.semibold))
+                Button { nav.openDashboard() } label: {
+                    Image(systemName: "chevron.left").frame(width: 22, height: 22)
+                }
+                .buttonStyle(.plain).accessibilityLabel("Back to dashboard")
+                Text(nav.page == .tools ? "All tools" : "Settings")
+                    .font(.system(size: 13, weight: .semibold))
                 Spacer()
             }
         }
     }
 
     @ViewBuilder private var dashboard: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("AI attention today").font(.subheadline.weight(.medium))
-                Text(duration(model.today.ai)).font(.system(size: 36, weight: .semibold, design: .rounded)).monospacedDigit()
-                Text("Active foreground use").font(.caption2).foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 3) {
+            HStack {
+                Text("AI attention today")
+                Spacer()
+                Text(tracking).lineLimit(1)
+            }.font(.caption).foregroundStyle(.secondary)
+            Text(duration(model.today.ai))
+                .font(.system(size: 36, weight: .medium)).tracking(-1.5).monospacedDigit()
+                .lineLimit(1).minimumScaleFactor(0.7)
+            if model.today.active > 0 {
+                Text("\((model.today.ai / model.today.active).formatted(.percent.precision(.fractionLength(0)))) of active time")
+                    .font(.caption).foregroundStyle(.secondary)
             }
-            Spacer()
-            VStack(alignment: .trailing, spacing: 4) {
-                Text(model.today.active > 0 ? (model.today.ai / model.today.active).formatted(.percent.precision(.fractionLength(0))) : "—")
-                    .font(.title2.weight(.semibold)).monospacedDigit()
-                Text("of active time").font(.caption).foregroundStyle(.secondary)
-            }
-        }.padding(14).background(ledgerTeal.opacity(0.085), in: RoundedRectangle(cornerRadius: 12))
-        HStack {
-            Text("Your AI tools").font(.headline)
-            Spacer()
-            Button("All AI Tools ›") { nav.page = .tools }.buttonStyle(.link)
         }
+        Divider()
         toolRows(model.today.tools, limit: 3)
+        Button { nav.page = .tools } label: {
+            HStack {
+                Text("All tools")
+                Spacer()
+                Image(systemName: "chevron.right").font(.system(size: 9, weight: .semibold))
+            }.contentShape(Rectangle())
+        }
+        .buttonStyle(.plain).font(.caption).foregroundStyle(.secondary)
+        .accessibilityLabel("All AI Tools")
         Divider()
         AttentionWeek(days: model.week)
-        Divider()
-        HStack(spacing: 8) {
-            Image(systemName: "globe").foregroundStyle(ledgerTeal)
-            Text("AI website identification").font(.callout)
-            Spacer()
-            if collector.sites {
-                Button("Manage") { nav.page = .settings }.buttonStyle(.link)
-            } else {
-                Button("Enable…") { nav.page = .settings }.controlSize(.small)
+        if !collector.sites {
+            Button { nav.page = .settings } label: {
+                HStack(spacing: 5) {
+                    Image(systemName: "globe")
+                    Text("Include AI websites")
+                    Spacer()
+                    Image(systemName: "plus").font(.system(size: 10))
+                }.contentShape(Rectangle())
             }
+            .buttonStyle(.plain).font(.caption).foregroundStyle(.secondary)
+            .help("Enable browser identification in Settings")
         }
     }
 
@@ -108,13 +114,13 @@ struct MenuBarUI: View {
         }.pickerStyle(.segmented).labelsHidden()
         let totals = nav.period == .today ? model.today.tools : weekTools
         Text("\(duration(totals.values.reduce(0, +))) AI attention").font(.headline)
-        if totals.count > 7 {
-            ScrollView { toolRows(totals) }.frame(height: 300)
+        if totals.count > 6 {
+            ScrollView { toolRows(totals) }.frame(height: 228)
         } else {
             toolRows(totals)
         }
         Divider()
-        Text("Claude Code and other terminal agents need direct product evidence to receive their own time.")
+        Text("Foreground attention only. Terminal agents need direct evidence to be identified.")
             .font(.caption).foregroundStyle(.secondary)
     }
 
@@ -123,27 +129,22 @@ struct MenuBarUI: View {
             a.value == b.value ? a.key < b.key : a.value > b.value
         }
         if sorted.isEmpty {
-            Label("Use an AI app, or enable AI website identification in Settings. Recorded attention will appear here.", systemImage: "sparkle.magnifyingglass")
-                .font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Your first minutes start here.").font(.callout.weight(.medium))
+                Text("Use an AI app, or enable websites in Settings. Time appears as you work.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }.fixedSize(horizontal: false, vertical: true)
         } else {
-            VStack(spacing: 10) {
+            VStack(spacing: 8) {
                 ForEach(Array(sorted.prefix(limit)), id: \.key) { name, seconds in
-                    HStack(spacing: 10) {
+                    HStack(spacing: 8) {
                         ToolIcon(name: name)
-                        VStack(spacing: 5) {
-                            HStack {
-                                Text(name).font(.callout.weight(.medium))
-                                Spacer()
-                                Text(duration(seconds)).font(.callout).monospacedDigit()
-                            }
-                            GeometryReader { geo in
-                                Capsule().fill(.primary.opacity(0.06))
-                                    .overlay(alignment: .leading) {
-                                        Capsule().fill(ledgerTeal).frame(width: geo.size.width * seconds / (sorted.first?.value ?? seconds))
-                                    }
-                            }.frame(height: 4)
-                        }
+                        Text(name).font(.callout).lineLimit(1).truncationMode(.tail)
+                        Spacer(minLength: 8)
+                        Text(duration(seconds)).font(.callout).monospacedDigit()
+                            .foregroundStyle(.secondary).fixedSize()
                     }
+                    .accessibilityElement(children: .combine)
                 }
                 if totals["Unknown"] != nil {
                     Text("Unknown includes AI app time where the product could not be identified.")
@@ -177,11 +178,11 @@ private struct ToolIcon: View {
         Group {
             if let image = Self.native[name] { Image(nsImage: image).resizable().scaledToFit().padding(2) }
             else {
-                Image(systemName: Self.symbols[name] ?? "app").font(.system(size: 15, weight: .medium))
+                Image(systemName: Self.symbols[name] ?? "app").font(.system(size: 12, weight: .medium))
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(.primary.opacity(0.06), in: RoundedRectangle(cornerRadius: 7))
+                    .background(.primary.opacity(0.06), in: RoundedRectangle(cornerRadius: 5))
             }
-        }.frame(width: 30, height: 30).accessibilityHidden(true)
+        }.frame(width: 22, height: 22).accessibilityHidden(true)
     }
 }
 
@@ -190,25 +191,27 @@ private struct AttentionWeek: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("AI activity").font(.headline)
+                Text("Past 7 days")
                 Spacer()
-                Text("Last 7 days").foregroundStyle(.secondary).font(.caption)
-            }
+                Text(duration(days.reduce(0) { $0 + $1.1.ai })).monospacedDigit()
+            }.font(.caption).foregroundStyle(.secondary)
             let peak = days.map { $0.1.ai }.max() ?? 0
-            HStack(alignment: .bottom, spacing: 7) {
+            HStack(alignment: .bottom, spacing: 12) {
                 ForEach(days.indices, id: \.self) { i in
                     let (date, stats) = days[i]
-                    VStack(spacing: 4) {
-                        Text(stats.ai > 0 ? duration(stats.ai) : "").font(.system(size: 10)).lineLimit(1).minimumScaleFactor(0.75)
-                        RoundedRectangle(cornerRadius: 3)
-                            .fill(stats.ai > 0 ? ledgerTeal : Color.secondary.opacity(0.2))
-                            .frame(height: stats.ai > 0 ? max(3, 36 * stats.ai / max(1, peak)) : 1)
-                        Text(date, format: .dateTime.weekday(.abbreviated)).font(.caption2).foregroundStyle(.secondary)
+                    VStack(spacing: 5) {
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(stats.ai > 0 ? Color.primary.opacity(0.7) : Color.secondary.opacity(0.2))
+                            .frame(width: 8, height: stats.ai > 0 ? max(3, 22 * stats.ai / max(1, peak)) : 2)
+                            .frame(height: 22, alignment: .bottom)
+                        Text(date, format: .dateTime.weekday(.abbreviated))
+                            .font(.system(size: 10)).foregroundStyle(.secondary)
                     }.frame(maxWidth: .infinity)
+                    .help("\(date.formatted(date: .abbreviated, time: .omitted)): \(duration(stats.ai))")
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel("\(date.formatted(date: .abbreviated, time: .omitted)), \(duration(stats.ai)) AI attention")
                 }
-            }.frame(height: peak > 0 ? 70 : 24, alignment: .bottom)
+            }
         }
     }
 }
@@ -217,30 +220,34 @@ struct PrivacySettings: View {
     @ObservedObject var model: LedgerModel
     @ObservedObject var collector: ActivityCollector
     @State private var confirming = false
+    private var browserAccess: String {
+        guard collector.sites else { return "Off" }
+        return collector.browserStatus == "Off" ? "Waiting for a supported browser" : collector.browserStatus
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Label("Activity collection", systemImage: "waveform.path.ecg").font(.headline)
+                Text("Recording").font(.callout.weight(.medium))
                 Spacer()
                 Button(collector.paused ? "Resume" : "Pause") { collector.togglePause() }
             }
             Divider()
             Toggle("Identify AI websites", isOn: Binding(get: { collector.sites }, set: { _ in collector.toggleSites() }))
                 .toggleStyle(.switch)
-            Text("Browser access · " + collector.browserStatus).font(.caption.weight(.medium))
-            Text("Enable identification, then visit an AI site in Safari, Chrome, Arc, Edge or Brave. Choose Allow when macOS asks for Automation access.")
-                .font(.callout).foregroundStyle(.secondary)
+            Text("Browser access · " + browserAccess).font(.caption.weight(.medium))
+            Text("Identify AI sites in Safari, Chrome, Arc, Edge or Brave. Allow Automation access when macOS asks.")
+                .font(.caption).foregroundStyle(.secondary)
             Divider()
-            Label("Local history", systemImage: "lock").font(.headline)
-            Text("This Mac stores app names, bundle IDs, recognized AI domains and time intervals.")
-                .font(.callout).foregroundStyle(.secondary)
+            Text("On this Mac").font(.callout.weight(.medium))
+            Text("App names, recognized AI domains and time intervals stay on this Mac. No prompts or page contents.")
+                .font(.caption).foregroundStyle(.secondary)
             HStack {
                 Button("Export JSON…") { model.export() }
                 Button("Delete history…", role: .destructive) { confirming = true }
             }
             Divider()
             Button("Quit AI Usage") { NSApplication.shared.terminate(nil) }.buttonStyle(.link)
-        }.fixedSize(horizontal: false, vertical: true)
+        }.controlSize(.small).fixedSize(horizontal: false, vertical: true)
         .alert("Delete AI Usage history?", isPresented: $confirming) {
             Button("Cancel", role: .cancel) {}
             Button("Delete", role: .destructive) { model.deleteHistory() }

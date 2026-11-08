@@ -30,8 +30,9 @@ import SwiftUI
                                                                  status: status, problem: problem)
                 guard let button = self?.item?.button else { return }
                 button.title = presentation.title
-                button.image = NSImage(systemSymbolName: paused ? "pause.circle" : "chart.bar.xaxis",
-                                       accessibilityDescription: nil)
+                button.image = presentation.symbolName.flatMap {
+                    NSImage(systemSymbolName: $0, accessibilityDescription: nil)
+                }
                 button.toolTip = presentation.detail
                 button.setAccessibilityLabel(presentation.detail)
             }

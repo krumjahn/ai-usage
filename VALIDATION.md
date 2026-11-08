@@ -1,3 +1,20 @@
+# Compact monochrome redesign — 8 November 2026
+
+- `App/MenuBarUI.swift`: 320pt panel, smaller typography and spacing, plain time metric, compact icon-and-duration rows, shallow weekly chart, and contextual browser setup. Removed teal cards, gradients, decorative logo, badges, and ranking bars. All tools remains accessible even when today has no data. Settings stays behind the gear; enabled browser identification no longer initially reads “Off”.
+- `App/AttentionMenuBarPresentation.swift` and `App/Entry.swift`: menu bar displays only time, with a small pause symbol when paused. Accessibility labels and the explanatory tooltip remain.
+- `App/Assets.xcassets` and `Design/GenerateIcon.swift`: original monochrome open-dial icon, with a reproducible vector generator for all macOS icon sizes. `project.yml` selects the icon asset.
+- Core collection, classification, database, and analytics files are byte-for-byte unchanged.
+
+Verification used the same scheme, destination, signing, and commands recorded below. All **15 tests passed** after the final change. Layout checks cover empty, one-day and multiweek fixtures in light/dark mode at 320pt; dashboard height stays below 410pt. Menu-bar tests cover time-only labels, pause-only icon, saved-data updates, idle exclusion, and midnight reset. Release build and signature verification passed.
+
+Native illustrative prototypes measured 320 × 370pt with three tools and the browser setup link. The real-data dashboard is shorter when browser tracking is already enabled. Inspected the actual popover, Today/Last 7 days navigation, Settings and pause/resume. Confirmed the live menu bar showed `32m`, matching the dashboard; collection was resumed after the test.
+
+Read-only history check preserved all 647 completed baseline rows exactly; SQLite `quick_check` returned `ok`. The currently coalescing last row was excluded from the baseline. No history, browser opt-in preference, or credentials were deleted. No provider integration was reintroduced.
+
+Limitations: runtime testing was on the current Mac, not macOS 13 hardware. Dark mode and empty/multiweek data were rendered/tested using isolated fixtures; the live smoke test used the user's current appearance and real data. Live sleep/wake was not retested. macOS can cache an older app icon until Finder refreshes it.
+
+---
+
 # Time-only release — 8 November 2026
 
 ## Changes

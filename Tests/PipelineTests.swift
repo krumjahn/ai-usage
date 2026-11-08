@@ -174,8 +174,9 @@ extension PipelineTests {
                     let view = NSHostingView(rootView: MenuBarUI(model: model, collector: model.collector, nav: nav)
                         .environment(\.colorScheme, scheme))
                     let size = view.fittingSize
-                    XCTAssertEqual(size.width, 420, accuracy: 1)
-                    XCTAssertTrue((120...650).contains(size.height), "\(page) height \(size.height)")
+                    XCTAssertEqual(size.width, 320, accuracy: 1)
+                    XCTAssertTrue((120...500).contains(size.height), "\(page) height \(size.height)")
+                    if page == .dashboard { XCTAssertLessThanOrEqual(size.height, 410) }
                 }
             }
         }

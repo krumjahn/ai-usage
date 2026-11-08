@@ -11,13 +11,15 @@ func duration(_ seconds: Double) -> String {
 struct AttentionMenuBarPresentation {
     let title: String
     let detail: String
+    let symbolName: String?
 
     init(seconds: Double, paused: Bool, status: String, problem: String?) {
+        symbolName = paused ? "pause.fill" : nil
         if let problem {
-            title = "AI —"
+            title = "—"
             detail = "AI Usage · " + problem
         } else {
-            title = "AI " + duration(seconds)
+            title = duration(seconds)
             detail = "AI attention today: \(duration(seconds)) · \(paused ? "Paused" : status). Recorded foreground time; refreshes every 10 seconds."
         }
     }

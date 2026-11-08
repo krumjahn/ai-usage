@@ -13,6 +13,7 @@ targets:
     sources: [Core, App]
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.rumjahn.attentionledger
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     info:
       path: App/Info.plist
       properties:
