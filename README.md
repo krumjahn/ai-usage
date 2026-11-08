@@ -2,7 +2,7 @@
 
 **A little clarity for your AI day.** A small, native Mac menu-bar app that brings your AI attention together—across desktop apps and websites.
 
-[Website](https://krumjahn.github.io/ai-usage/) · [Download preview](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview) · [Suggest an idea](https://github.com/krumjahn/ai-usage/issues/new/choose)
+[Download preview](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview) · [Suggest an idea](https://github.com/krumjahn/ai-usage/issues/new/choose)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/dashboard-dark.png">
@@ -10,6 +10,24 @@
 </picture>
 
 *Actual app, illustrative data. Public screenshots never use a person's activity history.*
+
+## Screenshots and video
+
+[![Watch the 14-second AI Usage demo](docs/images/demo-poster.jpg)](docs/media/ai-usage-demo.mp4)
+
+[Watch or download the demo](docs/media/ai-usage-demo.mp4) · [All screenshots](docs/images) · [Mac preview release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview)
+
+<details>
+<summary>Seven-day view and Settings</summary>
+
+<p>
+  <img src="docs/images/week.png" width="280" alt="Seven-day AI attention with per-tool web and desktop totals; illustrative data">
+  <img src="docs/images/settings.png" width="280" alt="AI Usage Settings with recording, website identification and local data controls">
+</p>
+
+</details>
+
+The screenshots show the real native interface with synthetic records. The 14-second silent demo uses the same sample data. Editable video source is in `promo/`; no website is needed to view or share these assets.
 
 ## What it does
 
@@ -58,13 +76,13 @@ The optional three-question feedback sheet sends only explicitly submitted answe
 | `Core/` | Collector, browser adapters, normalization, versioned classification, SQLite storage, analytics |
 | `App/` | Native dashboard, menu-bar presentation, local settings, optional feedback |
 | `Tests/` | Collection, classification, storage, analytics, navigation, feedback and privacy tests |
-| `website/` | Static landing page + optional Cloudflare Worker/D1 feedback service |
+| `website/` | Deferred website draft + optional, unconnected Cloudflare feedback service |
 | `promo/` | Editable 14-second HyperFrames product demo |
 | `Design/`, `scripts/` | Original icon and reproducible screenshots using synthetic records |
 
 Website: `cd website && npm ci && npm run dev`. Backend tests: `npm test && npm run types && npm run check`. Deployment and private feedback export are documented in [DEPLOYMENT.md](docs/DEPLOYMENT.md). No analytics scripts or third-party fonts.
 
-The site can run on GitHub Pages independently of Cloudflare. The feedback service is only deployed after an authenticated maintainer configures its own D1 database. No credentials belong in source control.
+**The launch is GitHub-first.** The website is not published, and its deployment workflow is disabled with no automatic push trigger. Its source is kept for later. Screenshots and the demo are available directly above and in the release. The feedback service remains unconnected. No credentials belong in source control.
 
 ## Contribute
 

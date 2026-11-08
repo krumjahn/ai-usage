@@ -1,6 +1,10 @@
 # Hosting and optional feedback
 
-The static site is deployed by `.github/workflows/pages.yml` to GitHub Pages. It does not depend on Cloudflare, collect answers or run analytics. In repository Settings → Pages, set the build source to GitHub Actions. Static asset links are relative, so `/ai-usage/` works.
+**Website launch is deferred.** GitHub Pages has been unpublished, the repository homepage link cleared, and `.github/workflows/pages.yml` disabled. The workflow has only a manual trigger, so source updates cannot automatically publish the site. Keep it disabled until the website launch is explicitly resumed.
+
+The public source, screenshots and video remain available on GitHub. Website source is preserved in `website/`; the standalone demo is in `docs/media/ai-usage-demo.mp4`.
+
+When website work resumes, enable Pages with GitHub Actions as the build source, enable the Website workflow, and dispatch it manually. Static asset links are relative, so `/ai-usage/` works. The site does not depend on Cloudflare, collect answers or run analytics.
 
 ## Connect private feedback later
 

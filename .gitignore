@@ -20,3 +20,4 @@ website/worker-configuration.d.ts
 !website/public/assets/demo.mp4
 
 .thumbnails/
+!docs/media/ai-usage-demo.mp4

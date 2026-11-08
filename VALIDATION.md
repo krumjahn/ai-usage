@@ -1,3 +1,11 @@
+# GitHub-first launch update — 8 November 2026
+
+Website publication is deferred at the maintainer's request. GitHub Pages is unpublished, its workflow disabled and its automatic push trigger removed, and the repository homepage cleared. Website source remains available for later work. The README now presents screenshots and a standalone demo directly on GitHub; the same MP4 remains attached to the preview release.
+
+This update changes documentation, media copies and deployment configuration only. App code, collector, settings and activity history are untouched. Verified the copied demo matches the existing rendered video byte-for-byte and checked its format with ffprobe. Application tests were not rerun for this documentation/deployment-only update; the prior 24 macOS and six API tests passed in CI.
+
+---
+
 # v0.1.0-preview validation — 8 November 2026
 
 ## Changes
