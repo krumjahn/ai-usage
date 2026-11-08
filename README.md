@@ -1,41 +1,73 @@
 # AI Usage
 
-A local macOS menu-bar app for foreground attention spent in AI tools. Adapted from Brainrot's Swift collection pipeline; it runs independently with its own activity history.
+**A little clarity for your AI day.** A small, native Mac menu-bar app that brings your AI attention together—across desktop apps and websites.
 
-- Menu-bar time (for example, **42m**) and dashboard share today's recorded AI total, refreshed every 10 seconds.
-- Web and desktop attention combines into one total per AI product, and one overall daily/menu-bar total. A compact source split appears under the selected-period total and beneath every tool. Overlapping observations count once.
-- One compact 320pt monochrome dashboard with a Today / 7 days selector, attention totals, share of active time, all used tools, and a seven-day activity strip. Lists longer than five tools scroll in place.
-- Time-only menu bar with a pause indicator when collection is paused; native light and dark appearance. Dashboard status appears only when paused, idle, or the session is inactive.
-- Original open-dial app icon. Regenerate its native sizes with `swift Design/GenerateIcon.swift`.
-- Optional browser identification for recognized AI domains. Chrome time alone does not count as AI.
-- Pause/resume, local JSON export, and explicit history deletion in Settings.
-- No allowance or token tracking, account connections, provider API requests, or cloud uploads.
+[Website](https://krumjahn.github.io/ai-usage/) · [Download preview](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview) · [Suggest an idea](https://github.com/krumjahn/ai-usage/issues/new/choose)
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/dashboard-dark.png">
+  <img src="docs/images/dashboard.png" width="320" alt="AI Usage native dashboard showing combined web and desktop attention per tool">
+</picture>
+
+*Actual app, illustrative data. Public screenshots never use a person's activity history.*
+
+## What it does
+
+- Today's AI attention in the menu bar, refreshed every 10 seconds.
+- One total per tool, with a small **Web / Desktop** split underneath.
+- Today and past-seven-days views in a compact, 320pt native panel.
+- ChatGPT, Claude, Codex, Cursor, Gemini, Grok, Windsurf, MiniMax Code and more. See the [registry](Core/AIToolClassifier.swift) for precise supported surfaces.
+- Opt-in website identification in Safari, Chrome, Arc, Edge and Brave. Generic browser time is not AI time.
+- Local SQLite history. Pause, export JSON, or delete history from Settings.
+- Light and dark appearance. No account required.
+
+This measures **active foreground attention**, not tokens, subscription allowances, background agents or productivity. Terminal time alone cannot identify Claude Code or another agent. It counts one foreground interval at a time, excludes idle and sleep gaps, and does not combine devices. The total updates as input confirms saved observations; it is not an independent stopwatch.
+
+## Try it
+
+macOS 13 or later. The [v0.1.0 preview](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview) is an **ad-hoc signed, unnotarized developer preview**, not a Developer ID release. macOS may block downloaded builds. Source builds are recommended until signing and notarization are available; see [installation notes](docs/INSTALL.md).
+
+Launch the app and look for a time such as `0s` or `42m` in the macOS menu bar. Click it to open the dashboard. If the menu bar is crowded, close another menu-bar utility temporarily. Opening AI Usage again also opens its dashboard window.
+
+For browser time, enable **Settings → Identify AI websites**, then bring a supported browser with a recognized AI site to the foreground. Allow the macOS Automation request for that browser. Other background tabs do not count.
 
 ## Build and test
 
-Requires macOS 13+, Xcode with command-line tools selected, and XcodeGen. The internal scheme and executable retain the AttentionLedger name; the user-facing app is AI Usage.
+Requires Xcode and its command-line tools, plus [XcodeGen](https://github.com/yonaskolb/XcodeGen). The internal scheme/executable remains `AttentionLedger`; the app is called AI Usage. The single macOS app and its XCTest bundle target macOS 13. Local builds use ad-hoc signing; no developer account is required.
 
 ```sh
+brew install xcodegen
 xcodegen generate
 xcodebuild -scheme AttentionLedger -destination 'platform=macOS' -derivedDataPath build -parallel-testing-enabled NO test
 xcodebuild -scheme AttentionLedger -configuration Release -destination 'platform=macOS' -derivedDataPath build build
 open build/Build/Products/Release/AttentionLedger.app --args --dashboard
 ```
 
-Local builds use ad-hoc signing (`CODE_SIGN_IDENTITY=-`). Production distribution would require Developer ID signing and notarization. Browser identification asks for macOS Automation permission per supported browser; foreground application tracking does not require an account login.
+Quit any running AI Usage instance before launching a second build. Two collectors must not write the same production database concurrently. Tests use temporary databases and never start the production collector.
 
-## Privacy and time semantics
+## Privacy & feedback
 
-SQLite history remains at `~/Library/Application Support/com.rumjahn.attentionledger/activity.sqlite`. Keep this bundle ID and support directory to preserve upgrades. Do not commit databases or exports.
+Activity stays at `~/Library/Application Support/com.rumjahn.attentionledger/activity.sqlite`. The bundle ID and support directory are stable so upgrades preserve history. No prompts, source code, window titles, full URLs, page contents or unrecognized website domains are saved.
 
-Only app names, bundle IDs, recognized normalized AI domains, time intervals, and classification provenance are stored. No prompts, source code, window titles, full URLs, or page contents are recorded. Terminal foreground time does not identify an AI agent.
+The optional three-question feedback sheet sends only explicitly submitted answers and app version, plus a random submission ID and form version. It never sends activity history. **The preview has no configured endpoint, so automatic onboarding is off.** Settings offers a GitHub feedback link meanwhile. Once connected, private responses go to Cloudflare D1 and expire after 90 days. [Privacy details](website/public/privacy.html) · [Deployment instructions](docs/DEPLOYMENT.md).
 
-The existing collector confirms intervals using input activity and excludes idle and sleep gaps. The menu-bar total is not an independent stopwatch: it advances after confirmed observations are saved and analytics refresh. It may remain unchanged while no new input confirms an interval. At midnight it shows the new local day's total. It does not measure background agent execution or concurrent work across devices.
+## Inside the repository
 
-Retired allowance connections are no longer accessed. Existing credentials belonging to other apps, and any previously saved AI Usage Keychain entry, are left untouched.
+| Directory | Purpose |
+| --- | --- |
+| `Core/` | Collector, browser adapters, normalization, versioned classification, SQLite storage, analytics |
+| `App/` | Native dashboard, menu-bar presentation, local settings, optional feedback |
+| `Tests/` | Collection, classification, storage, analytics, navigation, feedback and privacy tests |
+| `website/` | Static landing page + optional Cloudflare Worker/D1 feedback service |
+| `promo/` | Editable 14-second HyperFrames product demo |
+| `Design/`, `scripts/` | Original icon and reproducible screenshots using synthetic records |
 
-## Source layout
+Website: `cd website && npm ci && npm run dev`. Backend tests: `npm test && npm run types && npm run check`. Deployment and private feedback export are documented in [DEPLOYMENT.md](docs/DEPLOYMENT.md). No analytics scripts or third-party fonts.
 
-- `Core/`: activity sampling, browser adapters, domain classification, SQLite storage, and analytics.
-- `App/`: status item, dashboard, tool list, and local settings.
-- `Tests/`: pipeline, privacy, storage, layout, navigation, and menu-bar time tests using temporary databases.
+The site can run on GitHub Pages independently of Cloudflare. The feedback service is only deployed after an authenticated maintainer configures its own D1 database. No credentials belong in source control.
+
+## Contribute
+
+Bug reports, tool-registry improvements and small pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md), [security reporting](SECURITY.md) and [validation](VALIDATION.md). Please never attach usage exports or credentials to public issues.
+
+MIT licensed. Adapted from Keith Rumjahn's Brainrot Swift collection pipeline; this app runs independently. Product names and icons belong to their respective owners; their appearance does not imply endorsement.

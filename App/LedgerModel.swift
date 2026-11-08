@@ -9,6 +9,7 @@ final class LedgerModel: ObservableObject {
 
     private var store: ActivityStore?
     let collector = ActivityCollector()
+    let feedback = FeedbackModel()
     private var unsaved = [Segment]()
     private var lastReport = Date.distantPast
 
@@ -17,6 +18,7 @@ final class LedgerModel: ObservableObject {
     }
 
     func start() {
+        feedback.activate()
         collector.onSample = { [weak self] rows in
             guard let self else { return }
             unsaved += rows

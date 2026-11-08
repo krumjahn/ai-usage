@@ -8,3 +8,15 @@ xcuserdata/
 *.app/
 *.dSYM/
 .env*
+node_modules/
+.wrangler/
+.dev.vars*
+.hyperframes/
+.hyperframes-cache/
+*.mp4
+release/
+feedback-export*
+website/worker-configuration.d.ts
+!website/public/assets/demo.mp4
+
+.thumbnails/

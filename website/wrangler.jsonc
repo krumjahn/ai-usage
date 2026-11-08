@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ai-usage",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-08",
+  "assets": {"directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"]},
+  "d1_databases": [{"binding": "FEEDBACK_DB", "database_name": "ai-usage-feedback", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations"}],
+  "ratelimits": [{"name": "FEEDBACK_LIMITER", "namespace_id": "482071", "simple": {"limit": 5, "period": 60}}],
+  "observability": {"enabled": true, "logs": {"enabled": true, "invocation_logs": false}, "traces": {"enabled": true, "head_sampling_rate": 0.01}},
+  "triggers": {"crons": ["17 3 * * *"]}
+}

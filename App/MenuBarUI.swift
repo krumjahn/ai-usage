@@ -38,6 +38,7 @@ struct MenuBarUI: View {
         .padding(16).frame(width: panelWidth).fixedSize(horizontal: false, vertical: true)
         .background(Color(nsColor: .windowBackgroundColor))
         .tint(.primary)
+        .modifier(FeedbackPresentation(model: model.feedback))
     }
 
     private var header: some View {
@@ -244,6 +245,7 @@ struct PrivacySettings: View {
                 Button("Delete history…", role: .destructive) { confirming = true }
             }
             Divider()
+            Button("Help shape AI Usage…") { model.feedback.present() }.buttonStyle(.link)
             Button("Quit AI Usage") { NSApplication.shared.terminate(nil) }.buttonStyle(.link)
         }.controlSize(.small).fixedSize(horizontal: false, vertical: true)
         .alert("Delete AI Usage history?", isPresented: $confirming) {

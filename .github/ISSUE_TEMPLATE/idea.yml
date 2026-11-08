@@ -1,0 +1,21 @@
+name: Suggest an idea
+description: Tell us why you use AI Usage and what would help.
+body:
+  - type: markdown
+    attributes:
+      value: "This issue is public. Please don't include personal activity, prompts, credentials or email addresses."
+  - type: textarea
+    id: reason
+    attributes:
+      label: What brought you to AI Usage?
+  - type: dropdown
+    id: use
+    attributes:
+      label: What do you mainly use AI for?
+      options: [Coding, Research, Writing, Design, Other]
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would make it more useful?
+    validations:
+      required: true

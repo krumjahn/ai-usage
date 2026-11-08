@@ -1,0 +1,33 @@
+<template>
+<style>
+#root{position:absolute;inset:0;background:#f7f6f2;color:#252622;font-family:Inter,sans-serif}
+.brand{position:absolute;left:192px;top:142px;font-size:36px;font-weight:600;letter-spacing:-1px}.brand span{display:inline-block;width:27px;height:27px;border:3px solid #252622;border-top-color:transparent;border-radius:50%;margin-right:15px;vertical-align:-2px}
+.copy{position:absolute;left:192px;top:340px;width:860px}.copy h1{font-family:'EB Garamond',serif;font-weight:400;letter-spacing:-3px;font-size:110px;line-height:1.02;margin:0;white-space:pre-line}.copy p{font-size:32px;color:#62675a;margin-top:32px;line-height:1.5}
+.device{position:absolute;left:1180px;top:156px;width:470px}.device img{display:block;width:470px;border:1px solid #dedfd6;border-radius:18px}.sample{position:absolute;left:1180px;top:888px;width:470px;text-align:center;font-size:28px;color:#62675a}
+.foot{position:absolute;left:192px;top:884px;font-size:28px;color:#62675a}
+</style>
+<div data-hf-id="hf-e804" id="root" data-composition-id="overview" data-hold="Read the real interface" data-width="1920" data-height="1080">
+<div data-hf-id="hf-51a3" id="overview-brand" class="clip brand" data-start="0" data-duration="14" data-track-index="1"><span data-hf-id="hf-uckh"></span>AI Usage</div>
+<div data-hf-id="hf-3v9g" id="overview-first" class="clip copy" data-start="0" data-duration="4.5" data-track-index="2" data-beat="The product"><div data-hf-id="hf-o4w6" id="overview-first-inner"><h1 data-hf-id="hf-t2ze" data-var-text="headline">Your AI day.
+In one glance.</h1><p data-hf-id="hf-rzda">A little clarity, right in your menu bar.</p></div></div>
+<div data-hf-id="hf-h50y" id="overview-second" class="clip copy" data-start="4.5" data-duration="4.5" data-track-index="2" data-beat="Combined sources"><div data-hf-id="hf-100q" id="overview-second-inner"><h1 data-hf-id="hf-2dfe">Web. Desktop.
+One total.</h1><p data-hf-id="hf-5xei">Every tool, with a simple source split.</p></div></div>
+<div data-hf-id="hf-mh9h" id="overview-third" class="clip copy" data-start="9" data-duration="5" data-track-index="2" data-beat="A wider view"><div data-hf-id="hf-twvf" id="overview-third-inner"><h1 data-hf-id="hf-cyta">A week of AI.
+A clearer view.</h1><p data-hf-id="hf-718z">Free. Open source. Made for Mac.</p></div></div>
+<div data-hf-id="hf-ye6d" id="overview-today" class="clip device" data-start="0" data-duration="9" data-track-index="3"><img data-hf-id="hf-q3ih" id="overview-today-image" src="assets/dashboard.png" alt="AI Usage today dashboard, demo data"></div>
+<div data-hf-id="hf-i9sj" id="overview-week" class="clip device" data-start="9" data-duration="5" data-track-index="3"><img data-hf-id="hf-ibnp" id="overview-week-image" src="assets/week.png" alt="AI Usage past seven days, demo data"></div>
+<div data-hf-id="hf-wn4y" id="overview-sample" class="clip sample" data-start="0" data-duration="14" data-track-index="4">Actual app · Demo data</div>
+<div data-hf-id="hf-3k7g" id="overview-footer" class="clip foot" data-start="0" data-duration="14" data-track-index="4">Local activity. No account. Yours.</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.fromTo('#overview-first-inner',{y:18,opacity:0.8},{y:0,opacity:1,duration:0.65,ease:'power2.out'},0);
+tl.fromTo('#overview-today-image',{y:16},{y:0,duration:0.8,ease:'power2.out'},0);
+tl.to('#overview-first-inner',{opacity:0,duration:0.2},4.25);
+tl.fromTo('#overview-second-inner',{y:18,opacity:0},{y:0,opacity:1,duration:0.55,ease:'power2.out'},4.5);
+tl.to('#overview-second-inner',{opacity:0,duration:0.2},8.75);
+tl.fromTo('#overview-third-inner',{y:18,opacity:0},{y:0,opacity:1,duration:0.55,ease:'power2.out'},9);
+tl.fromTo('#overview-week-image',{opacity:0.65,y:8},{opacity:1,y:0,duration:0.45,ease:'power2.out'},9);
+window.__timelines.overview=tl;
+</script>
+</template>
