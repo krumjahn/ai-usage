@@ -1,8 +1,6 @@
+# Website launch is deferred. Keep this workflow disabled until explicitly resumed.
 name: Website
 on:
-  push:
-    branches: [main]
-    paths: ['website/public/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 permissions:
   contents: read
