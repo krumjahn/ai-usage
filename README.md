@@ -3,7 +3,7 @@
 A local macOS menu-bar app for foreground attention spent in AI tools. Adapted from Brainrot's Swift collection pipeline; it runs independently with its own activity history.
 
 - Menu-bar time (for example, **42m**) and dashboard share today's recorded AI total, refreshed every 10 seconds.
-- Web and desktop attention combines into one total per AI product, and one overall daily/menu-bar total. Overlapping observations count once.
+- Web and desktop attention combines into one total per AI product, and one overall daily/menu-bar total. A compact source split appears under the daily and selected-period totals; hover a tool for its split. Overlapping observations count once.
 - A compact 320pt monochrome panel with daily attention, share of active time, tool rankings, and a seven-day activity strip.
 - Time-only menu bar with a pause indicator when collection is paused; native light and dark appearance.
 - Original open-dial app icon. Regenerate its native sizes with `swift Design/GenerateIcon.swift`.

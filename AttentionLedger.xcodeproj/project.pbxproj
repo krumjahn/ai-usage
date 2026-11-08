@@ -7,14 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07C13F924FCBABDAD0399087 /* AttentionSplit.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5941EC264E91B89876E89A /* AttentionSplit.swift */; };
 		0C9EE0F8A85037371CC1B14C /* SamplingDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC21A0AD0D8804B83C3DF50 /* SamplingDriver.swift */; };
 		19A0DAD27946EEF8F03E06A3 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538CE27AA60999A0AB12BC5D /* Entry.swift */; };
 		246887B2EA1ABF5373CFF493 /* AttentionMenuBarPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EEDF694690496BD4F5A132 /* AttentionMenuBarPresentation.swift */; };
 		4AD6D575CC92763C389C5C44 /* BrowserAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83B44B730ECD83BA88AADE /* BrowserAdapter.swift */; };
+		77BC62B153C20AD09CE06805 /* AttentionSplitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C4DBA340A4D06225E626C7 /* AttentionSplitTests.swift */; };
 		78CE559AE6E38FC20838DC0D /* PipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359DAD2410D10FF1B880657F /* PipelineTests.swift */; };
 		841A61BE43C6A05D1F6BB00E /* MiniMaxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED53E24F6538AF3D1EB5D38 /* MiniMaxTests.swift */; };
 		84D1EA147C57ACA70C7CB07D /* AIToolClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D38624155A0471282F39E635 /* AIToolClassifier.swift */; };
 		87E85BC17E411551FD88AC59 /* MenuBarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7AE833C48F43D47CB8FBD4 /* MenuBarUI.swift */; };
+		96B24D17C2936A71E2030BEB /* AttentionSplitSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEA998904992088D3E6D7F3 /* AttentionSplitSummary.swift */; };
 		A36F5408AD6CD284A286D5FB /* ActivityCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FF5764827BFF3C1440D5BA /* ActivityCollector.swift */; };
 		BE1E015FC7C2C7F17C68EA2B /* LedgerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C31A4C9C39A3BBB818813F /* LedgerModel.swift */; };
 		CA5A9F6B527AA4D19A505C52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8892D00722A6D102592D328A /* Assets.xcassets */; };
@@ -38,6 +41,8 @@
 		12EE30B27291DBE7CBE99698 /* AttentionLedger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AttentionLedger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F83B44B730ECD83BA88AADE /* BrowserAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserAdapter.swift; sourceTree = "<group>"; };
 		359DAD2410D10FF1B880657F /* PipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineTests.swift; sourceTree = "<group>"; };
+		40C4DBA340A4D06225E626C7 /* AttentionSplitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttentionSplitTests.swift; sourceTree = "<group>"; };
+		4EEA998904992088D3E6D7F3 /* AttentionSplitSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttentionSplitSummary.swift; sourceTree = "<group>"; };
 		538CE27AA60999A0AB12BC5D /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		7C5124E526112BFA469744C2 /* UsageAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageAnalytics.swift; sourceTree = "<group>"; };
 		80C31A4C9C39A3BBB818813F /* LedgerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerModel.swift; sourceTree = "<group>"; };
@@ -50,6 +55,7 @@
 		CB7AE833C48F43D47CB8FBD4 /* MenuBarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarUI.swift; sourceTree = "<group>"; };
 		CF5C09B1B97C7949AAEE7AF9 /* LedgerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LedgerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D38624155A0471282F39E635 /* AIToolClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIToolClassifier.swift; sourceTree = "<group>"; };
+		DE5941EC264E91B89876E89A /* AttentionSplit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttentionSplit.swift; sourceTree = "<group>"; };
 		EED53E24F6538AF3D1EB5D38 /* MiniMaxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMaxTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +73,7 @@
 		17A7E58678254754325FB9E3 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				40C4DBA340A4D06225E626C7 /* AttentionSplitTests.swift */,
 				B65F283FC472DA389957CFFD /* MenuBarTimeTests.swift */,
 				EED53E24F6538AF3D1EB5D38 /* MiniMaxTests.swift */,
 				359DAD2410D10FF1B880657F /* PipelineTests.swift */,
@@ -79,6 +86,7 @@
 			children = (
 				8892D00722A6D102592D328A /* Assets.xcassets */,
 				A4EEDF694690496BD4F5A132 /* AttentionMenuBarPresentation.swift */,
+				4EEA998904992088D3E6D7F3 /* AttentionSplitSummary.swift */,
 				538CE27AA60999A0AB12BC5D /* Entry.swift */,
 				0DBB1567E4427C338B0573F1 /* Info.plist */,
 				80C31A4C9C39A3BBB818813F /* LedgerModel.swift */,
@@ -102,6 +110,7 @@
 				C8FF5764827BFF3C1440D5BA /* ActivityCollector.swift */,
 				97741D8BF356C89DEF38545B /* ActivityStore.swift */,
 				D38624155A0471282F39E635 /* AIToolClassifier.swift */,
+				DE5941EC264E91B89876E89A /* AttentionSplit.swift */,
 				1F83B44B730ECD83BA88AADE /* BrowserAdapter.swift */,
 				8AC21A0AD0D8804B83C3DF50 /* SamplingDriver.swift */,
 				7C5124E526112BFA469744C2 /* UsageAnalytics.swift */,
@@ -205,6 +214,8 @@
 				A36F5408AD6CD284A286D5FB /* ActivityCollector.swift in Sources */,
 				FCA82C36F56CF1B8AF879C8F /* ActivityStore.swift in Sources */,
 				246887B2EA1ABF5373CFF493 /* AttentionMenuBarPresentation.swift in Sources */,
+				07C13F924FCBABDAD0399087 /* AttentionSplit.swift in Sources */,
+				96B24D17C2936A71E2030BEB /* AttentionSplitSummary.swift in Sources */,
 				4AD6D575CC92763C389C5C44 /* BrowserAdapter.swift in Sources */,
 				19A0DAD27946EEF8F03E06A3 /* Entry.swift in Sources */,
 				BE1E015FC7C2C7F17C68EA2B /* LedgerModel.swift in Sources */,
@@ -218,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77BC62B153C20AD09CE06805 /* AttentionSplitTests.swift in Sources */,
 				D37BE06A0152072541C7C65D /* MenuBarTimeTests.swift in Sources */,
 				841A61BE43C6A05D1F6BB00E /* MiniMaxTests.swift in Sources */,
 				78CE559AE6E38FC20838DC0D /* PipelineTests.swift in Sources */,

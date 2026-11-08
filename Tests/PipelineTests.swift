@@ -43,6 +43,9 @@ final class PipelineTests: XCTestCase {
             ]
             let report = UsageAnalytics(rows, from: 0, to: 210)
             XCTAssertEqual(report.tools, [name: 90, "Codex": 30])
+            XCTAssertEqual(report.toolSplits[name], AttentionSplit(web: 30, desktop: 60))
+            XCTAssertEqual(report.toolSplits["Codex"], AttentionSplit(web: 0, desktop: 30))
+            XCTAssertEqual(report.split, AttentionSplit(web: 30, desktop: 90))
             XCTAssertEqual(report.ai, 120, "Web/desktop overlap must count once")
             XCTAssertEqual(report.active, 150, "Ordinary browsing is active but not AI")
         }

@@ -1,3 +1,13 @@
+# Minimal web / desktop split — 8 November 2026
+
+- `Core/AttentionSplit.swift` and `Core/UsageAnalytics.swift`: derive per-tool web/desktop seconds from the existing deduplicated foreground intervals. Combined totals now derive from the two sources, so the split and total cannot drift. Browser classification and stored observations are unchanged.
+- `App/AttentionSplitSummary.swift` and `App/MenuBarUI.swift`: one compact line under the total (for example, “Web 15s · Desktop 47m”), preserving the 320pt panel and time-only menu bar. The active-time percentage remains beside the hero metric. All tools shows the selected day's or week's split; per-tool splits are available through native hover help and accessibility labels.
+- `Tests/AttentionSplitTests.swift` and the existing combined-source regression test: cover empty/web-only/desktop-only activity, mixed-source products, overlap exclusion, midnight boundaries, weekly aggregation, and preserved stored rows.
+
+Uses the same Xcode test/build commands below, with logs in `work/split-tests.log` and `work/split-build.log`. All 20 tests, release build and signature verification passed. Live dashboard, daily/weekly navigation, per-tool accessibility names and native help values verified. All 704 baseline completed history rows unchanged; SQLite integrity passed. Source durations use the same compact rounding as other metrics; rounded labels can differ slightly from the displayed combined total. Only recorded recognized AI website time is included; unsupported or previously discarded browser domains cannot be reconstructed.
+
+---
+
 # Combined web and desktop presentation — 8 November 2026
 
 The analytics already group observations by canonical tool identity. Updated `App/MenuBarUI.swift` to explicitly label the daily metric “Web + desktop” and explain per-tool grouping in All tools. `App/AttentionMenuBarPresentation.swift` includes the same scope in the menu-bar tooltip. Kept the time-only menu-bar label and compact 320pt layout.

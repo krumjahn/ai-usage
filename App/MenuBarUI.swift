@@ -26,8 +26,8 @@ struct MenuBarUI: View {
         }
         return "Tracking"
     }
-    private var weekTools: [String: Double] {
-        model.week.reduce(into: [:]) { $0.merge($1.1.tools, uniquingKeysWith: +) }
+    private var weekSplits: [String: AttentionSplit] {
+        model.week.reduce(into: [:]) { $0.merge($1.1.toolSplits, uniquingKeysWith: +) }
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -73,20 +73,22 @@ struct MenuBarUI: View {
                 Spacer()
                 Text(tracking).lineLimit(1)
             }.font(.caption).foregroundStyle(.secondary)
-            Text(duration(model.today.ai))
-                .font(.system(size: 36, weight: .medium)).tracking(-1.5).monospacedDigit()
-                .lineLimit(1).minimumScaleFactor(0.7)
-            HStack {
-                Text("Web + desktop")
+            HStack(alignment: .firstTextBaseline) {
+                Text(duration(model.today.ai))
+                    .font(.system(size: 36, weight: .medium)).tracking(-1.5).monospacedDigit()
+                    .lineLimit(1).minimumScaleFactor(0.7)
                 Spacer()
                 if model.today.active > 0 {
-                    Text("\((model.today.ai / model.today.active).formatted(.percent.precision(.fractionLength(0)))) of active time")
+                    let share = (model.today.ai / model.today.active).formatted(.percent.precision(.fractionLength(0)))
+                    Text("\(share) active").font(.caption).foregroundStyle(.secondary)
+                        .fixedSize().help("\(share) of all active foreground time")
+                        .accessibilityLabel("\(share) of all active foreground time")
                 }
-            }.font(.caption).foregroundStyle(.secondary)
-                .help("Recognized AI websites and desktop apps combined. Only active foreground time counts.")
+            }
+            AttentionSplitSummary(split: model.today.split)
         }
         Divider()
-        toolRows(model.today.tools, limit: 3)
+        toolRows(model.today.toolSplits, limit: 3)
         Button { nav.page = .tools } label: {
             HStack {
                 Text("All tools")
@@ -116,19 +118,24 @@ struct MenuBarUI: View {
         Picker("Period", selection: $nav.period) {
             ForEach(ToolPeriod.allCases, id: \.self) { Text($0.rawValue).tag($0) }
         }.pickerStyle(.segmented).labelsHidden()
-        let totals = nav.period == .today ? model.today.tools : weekTools
-        Text("\(duration(totals.values.reduce(0, +))) AI attention").font(.headline)
-        if totals.count > 6 {
-            ScrollView { toolRows(totals) }.frame(height: 228)
+        let splits = nav.period == .today ? model.today.toolSplits : weekSplits
+        let combined = splits.values.reduce(AttentionSplit(), +)
+        VStack(alignment: .leading, spacing: 3) {
+            Text("\(duration(combined.total)) AI attention").font(.headline)
+            AttentionSplitSummary(split: combined)
+        }
+        if splits.count > 6 {
+            ScrollView { toolRows(splits) }.frame(height: 228)
         } else {
-            toolRows(totals)
+            toolRows(splits)
         }
         Divider()
-        Text("Web + desktop, grouped by tool. Foreground time only; background tabs and agents are not counted.")
+        Text("Hover over a tool for its web and desktop split. Foreground time only.")
             .font(.caption).foregroundStyle(.secondary)
     }
 
-    @ViewBuilder private func toolRows(_ totals: [String: Double], limit: Int = .max) -> some View {
+    @ViewBuilder private func toolRows(_ splits: [String: AttentionSplit], limit: Int = .max) -> some View {
+        let totals = splits.mapValues(\.total)
         let sorted = totals.sorted { (a: (key: String, value: Double), b: (key: String, value: Double)) in
             a.value == b.value ? a.key < b.key : a.value > b.value
         }
@@ -148,7 +155,10 @@ struct MenuBarUI: View {
                         Text(duration(seconds)).font(.callout).monospacedDigit()
                             .foregroundStyle(.secondary).fixedSize()
                     }
-                    .accessibilityElement(children: .combine)
+                    .contentShape(Rectangle())
+                    .accessibilityElement(children: .ignore)
+                    .help(AttentionSplitSummary.description(splits[name] ?? AttentionSplit()))
+                    .accessibilityLabel("\(name), \(duration(seconds)). \(AttentionSplitSummary.description(splits[name] ?? AttentionSplit()))")
                 }
                 if totals["Unknown"] != nil {
                     Text("Unknown includes AI app time where the product could not be identified.")
