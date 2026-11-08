@@ -1,16 +1,18 @@
-# Menu-bar demo review
+# Benefit-led menu-bar demo review
 
-14 seconds, 1920×1080, 30fps, silent. The film establishes a macOS desktop, moves the native pointer to AI Usage's time-only menu-bar item, clicks, opens the real native dashboard screenshot below it, and moves closer for reading. A second click on the empty desktop dismisses the panel and the camera returns. This demonstrates where the app lives without inventing a Dock icon or changing the product.
+14 seconds, 1920×1080, 30fps, silent. The opening asks “What’s your most-used AI tool? You might be wrong.” The pointer clicks the menu-bar timer at 3.2s; the real native dashboard appears at 3.3s, followed by an anchored camera move from 4–5.2s. The ranking and combined web/desktop time hold until the outside click at 10.2s. The close reads “See where your AI time goes. Free. Open source. Local to your Mac.”
 
-The desktop and interaction are staged, not a live screen recording. The dashboard is an authentic SwiftUI capture with synthetic records; all figures and the clock are illustrative. A persistent label says “Staged macOS desktop · Sample data.” No private desktop or activity history appears.
+This is a copy and timing revision of the existing Mac desktop demo. The previous output/source are preserved in Git and the workspace's `work/ai-habits-demo-before/`. No weekly recap, peer comparison, productivity claim, app change or website deployment was added.
 
-## Visual checks
+The desktop interaction is staged. Dashboard pixels come from the actual SwiftUI app with synthetic records; the persistent “Staged macOS desktop · Sample data” label remains. No private activity history is used.
 
-- Full HyperFrames check: zero errors or warnings. The only informational finding is intentional silence; this remains a short, user-started 14-second demo.
-- Reviewed settled beats, both headline transitions, the 360px phone sheet, opening-click frames, and the dismissal seam. Fixed dismissal to begin after the outside click, at 10.22 seconds.
-- The camera holds while viewers read. Pointer and panel share camera coordinates so their attachment to the menu bar remains consistent.
-- Inspected an encoded frame and measured the final file separately with ffprobe. This is media validation, not a new app functionality test.
+## Verification
 
-The weakest view is the initial full desktop: the menu-bar time is naturally small. Pointer movement and the opening panel establish the action; the later close-up makes the total legible. Individual tool subtitles still require fullscreen on a phone. A separate vertical social cut could use a tighter crop, but this update preserves the existing landscape format. No new music, narration, website deployment or app features were added.
+- `npx --yes hyperframes@0.8.223 check --json`: zero errors or warnings across lint, runtime, layout, contrast and craft. Informational `audio_none` is intentional.
+- `snapshot --at 0,3.3,5.5,11.8`: inspected first frame, opening, ranking and final state.
+- `snapshot --review` and `snapshot --review --composition overview`: inspected beat/phone sheets and both headline transition strips. No clipped copy; no camera jump at the text transitions; dismissal follows the outside click.
+- HyperFrames preview reached 00:14 with the new closing copy through its Play control. This verifies playback completion, not continuous human observation of all motion.
+- `render --quality delivery --fps 30`: H.264, 420 frames, 1920×1080, 14.000 seconds, 1,071,992 bytes. Inspected an encoded 5.5s frame and extracted a new first-frame poster.
+- App tests were not rerun: no Swift, database, permissions or app binary changes.
 
-Editable source remains in `promo/` and the HyperFrames preview.
+The weakest view remains the landscape demo at phone width: the hook is visible, but individual tool subtitles require fullscreen. A dedicated vertical edit could improve this; it is not part of this revision. No voiceover/music was added and nothing was auditioned. The private Fish Audio preview remains separate. The benefit-led hook is a positioning test, not a measured conversion improvement.

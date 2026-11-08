@@ -18,20 +18,22 @@
 .click-ring{position:absolute;width:36px;height:36px;z-index:6}
 .click-ring span{display:block;width:36px;height:36px;border:2px solid #244356;border-radius:50%}
 #open-click{left:1258px;top:0}#close-click{left:982px;top:452px}
+#intro-title,#close-title{top:65px}
+.subline{display:block;margin-top:8px;font-size:32px;letter-spacing:-0.7px;color:#62675a}
 .footer{position:absolute;left:192px;right:192px;top:982px;display:flex;justify-content:space-between;font-size:28px;color:#62675a;line-height:1.3}
 </style>
 <div id="root" data-composition-id="overview" data-width="1920" data-height="1080" data-hold="Read the native dashboard after it opens">
-<div id="intro-title" class="clip headline" data-start="0" data-duration="3.8" data-track-index="2"><div id="intro-copy" data-var-text="headline">Your AI time lives in the menu bar.</div></div>
-<div id="open-title" class="clip headline" data-start="3.8" data-duration="6.4" data-track-index="2"><div id="open-copy">One click. Your AI tools, together.</div></div>
-<div id="close-title" class="clip headline" data-start="10.2" data-duration="3.8" data-track-index="2"><div id="close-copy">A little clarity. Then back to your day.</div></div>
+<div id="intro-title" class="clip headline" data-start="0" data-duration="3.8" data-track-index="2"><div id="intro-copy"><span data-var-text="headline">What’s your most-used AI tool?</span><span class="subline">You might be wrong.</span></div></div>
+<div id="open-title" class="clip headline" data-start="3.8" data-duration="6.4" data-track-index="2"><div id="open-copy">Your tools. Web + desktop, together.</div></div>
+<div id="close-title" class="clip headline" data-start="10.2" data-duration="3.8" data-track-index="2"><div id="close-copy">See where your AI time goes.<span class="subline">Free. Open source. Local to your Mac.</span></div></div>
 <div id="mac-stage" class="clip" data-start="0" data-duration="14" data-track-index="1" data-layout-allow-overlap="true">
   <div id="mac-camera" data-layout-allow-overflow="true">
     <svg class="wallpaper" viewBox="0 0 1600 744" aria-label="Original abstract desktop wallpaper"><path d="M-80 760C240 550 350 45 800 170S1200 700 1680 380V800H-80Z" fill="#93afb9"/><path d="M-60 820C330 470 520 280 870 385S1250 800 1700 540V820Z" fill="#6c8f9b"/><path d="M450 820C830 580 1110 530 1700 700V820Z" fill="#527582"/></svg>
     <img class="menu" src="assets/mac/menu-bar.png" alt="macOS Finder menu bar with AI Usage time, 2 hours 14 minutes">
-    <div id="selected-status" class="clip" data-start="2.2" data-duration="8.2" data-track-index="3"></div>
+    <div id="selected-status" class="clip" data-start="3.2" data-duration="7.2" data-track-index="3"></div>
     <div class="dock" aria-label="macOS Dock"><img src="assets/mac/finder.png" alt="Finder"><img src="assets/mac/safari.png" alt="Safari"><img src="assets/mac/notes.png" alt="Notes"><img src="assets/mac/settings.png" alt="System Settings"></div>
-    <div id="popover-anchor" class="clip" data-start="2.3" data-duration="8.1" data-track-index="4" data-beat="Click opens the menu-bar panel"><div id="popover-panel"><img src="assets/dashboard.png" alt="Actual AI Usage native dashboard with illustrative data"></div></div>
-    <div id="open-click" class="clip click-ring" data-start="2.2" data-duration="0.55" data-track-index="5"><span id="open-ring"></span></div>
+    <div id="popover-anchor" class="clip" data-start="3.3" data-duration="7.1" data-track-index="4" data-beat="Click opens the menu-bar panel"><div id="popover-panel"><img src="assets/dashboard.png" alt="Actual AI Usage native dashboard with illustrative data"></div></div>
+    <div id="open-click" class="clip click-ring" data-start="3.2" data-duration="0.55" data-track-index="5"><span id="open-ring"></span></div>
     <div id="close-click" class="clip click-ring" data-start="10.2" data-duration="0.55" data-track-index="5"><span id="close-ring"></span></div>
     <div id="mac-cursor"><img src="assets/mac/cursor.png" alt="macOS pointer"></div>
   </div>
@@ -43,13 +45,13 @@ const tl=gsap.timeline({paused:true});
 // The native cursor and dashboard share the camera's coordinate space.
 // Two explicit clicks: the real time-only status item, then the empty desktop.
 tl.set('#mac-cursor',{x:860,y:450,scale:1},0);
-tl.to('#mac-cursor',{x:1276,y:18,duration:1.15,ease:'power2.inOut'},0.95);
-tl.to('#mac-cursor',{scale:0.84,duration:0.08},2.2);
-tl.to('#mac-cursor',{scale:1,duration:0.13},2.28);
-tl.fromTo('#open-ring',{scale:0.4,opacity:0.8},{scale:1.7,opacity:0,duration:0.5,ease:'power2.out'},2.2);
-tl.fromTo('#popover-panel',{y:-5,scale:0.985,opacity:0},{y:0,scale:1,opacity:1,duration:0.24,ease:'power3.out'},2.3);
-tl.fromTo('#mac-camera',{scale:1},{scale:1.35,duration:1.2,ease:'power2.inOut'},3);
-tl.to('#mac-cursor',{x:1060,y:200,duration:0.7,ease:'power2.inOut'},3.15);
+tl.to('#mac-cursor',{x:1276,y:18,duration:1.15,ease:'power2.inOut'},1.95);
+tl.to('#mac-cursor',{scale:0.84,duration:0.08},3.2);
+tl.to('#mac-cursor',{scale:1,duration:0.13},3.28);
+tl.fromTo('#open-ring',{scale:0.4,opacity:0.8},{scale:1.7,opacity:0,duration:0.5,ease:'power2.out'},3.2);
+tl.fromTo('#popover-panel',{y:-5,scale:0.985,opacity:0},{y:0,scale:1,opacity:1,duration:0.24,ease:'power3.out'},3.3);
+tl.fromTo('#mac-camera',{scale:1},{scale:1.35,duration:1.2,ease:'power2.inOut'},4);
+tl.to('#mac-cursor',{x:1060,y:200,duration:0.7,ease:'power2.inOut'},4.15);
 tl.to('#intro-copy',{opacity:0,duration:0.15},3.6);
 tl.fromTo('#open-copy',{opacity:0},{opacity:1,duration:0.2},3.8);
 tl.to('#mac-cursor',{x:1000,y:470,duration:0.7,ease:'power2.inOut'},9.4);

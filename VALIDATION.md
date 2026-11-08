@@ -103,3 +103,7 @@ Actual native views rendered with synthetic records in a temporary database. Hyp
 - Release archive contains the app only, no databases or exports; checksum is published alongside it.
 
 Not tested: remote Cloudflare submission, production retention, fresh-user browser permission prompts, Intel/macOS 13 runtime, live sleep/wake regression or Developer ID notarization. Cloudflare authorization is deferred. Signing certificate is unavailable. The preview is ad-hoc signed and not notarized; automatic feedback stays disabled until a live endpoint is configured and verified.
+
+## Benefit-led demo revision — 2026-11-08
+
+Revised the 14-second demo's hook and closing benefit, with the opening click moved to 3.2s. HyperFrames 0.8.223 check passed with zero errors/warnings; beat, phone and transition frames were inspected. Final H.264 export: 1920×1080, 30fps, 420 frames, 14.000s, 1,071,992 bytes, intentionally silent. Native dashboard remains the existing synthetic-data capture. See `promo/REVIEW.md` and `promo/STYLE-APPLICATION.md`. No app code/history changed; XCTest was not rerun for this media-only update.

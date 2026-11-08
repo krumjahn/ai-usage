@@ -13,9 +13,9 @@
 
 ## Screenshots and video
 
-Press Play to see AI Usage open from the macOS menu bar.
+**What’s your most-used AI tool? You might be wrong.** Press Play to see how AI Usage brings your web and desktop time together in the Mac menu bar.
 
-https://github.com/user-attachments/assets/168d8d7d-3469-4bad-8d5a-297618249d17
+https://github.com/user-attachments/assets/7ef74dfc-19e6-44ae-ac45-056afd9db8e4
 
 [Download the demo MP4](https://github.com/krumjahn/ai-usage/releases/download/v0.1.0-preview/demo.mp4) · [All screenshots](docs/images) · [Mac preview release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview)
 
