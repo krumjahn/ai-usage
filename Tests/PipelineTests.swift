@@ -190,17 +190,31 @@ extension PipelineTests {
             XCTAssertEqual(model.week.count, 7)
             XCTAssertEqual(model.week.filter { $0.1.ai > 0 }.count, min(span, 7))
             XCTAssertEqual(model.today.ai, span == 0 ? 0 : Double(domains.count * 60))
-            for scheme in [ColorScheme.light, .dark] {
-                for period in ToolPeriod.allCases {
-                    nav.period = period
-                    for page in [DashboardPage.dashboard, .settings] {
-                        nav.page = page
-                        let view = NSHostingView(rootView: MenuBarUI(model: model, collector: model.collector, nav: nav)
-                            .environment(\.colorScheme, scheme))
-                        let size = view.fittingSize
-                        XCTAssertEqual(size.width, 320, accuracy: 1)
-                        XCTAssertTrue((120...500).contains(size.height), "\(page) height \(size.height)")
-                        if page == .dashboard { XCTAssertLessThanOrEqual(size.height, 460) }
+            // Override preferences only in this test process, never in the user's defaults file.
+            let defaults = UserDefaults.standard
+            let previous = defaults.volatileDomain(forName: UserDefaults.argumentDomain)
+            defer { defaults.setVolatileDomain(previous, forName: UserDefaults.argumentDomain) }
+            for sites in [false, true] {
+                var preferences = previous
+                preferences["sites"] = sites
+                preferences["paused"] = false
+                defaults.setVolatileDomain(preferences, forName: UserDefaults.argumentDomain)
+                let displayModel = LedgerModel(store: store)
+                displayModel.refresh(at: noon)
+                XCTAssertEqual(displayModel.collector.sites, sites)
+                for scheme in [ColorScheme.light, .dark] {
+                    for period in ToolPeriod.allCases {
+                        nav.period = period
+                        for page in [DashboardPage.dashboard, .settings] {
+                            nav.page = page
+                            let view = NSHostingView(rootView: MenuBarUI(model: displayModel, collector: displayModel.collector, nav: nav)
+                                .environment(\.colorScheme, scheme))
+                            let size = view.fittingSize
+                            XCTAssertEqual(size.width, 320, accuracy: 1)
+                            XCTAssertTrue((120...500).contains(size.height), "\(page) height \(size.height)")
+                            // The first-run website opt-in adds a native control row and spacing.
+                            if page == .dashboard { XCTAssertLessThanOrEqual(size.height, sites ? 460 : 490) }
+                        }
                     }
                 }
             }
