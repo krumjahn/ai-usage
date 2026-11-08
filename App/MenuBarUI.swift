@@ -76,10 +76,14 @@ struct MenuBarUI: View {
             Text(duration(model.today.ai))
                 .font(.system(size: 36, weight: .medium)).tracking(-1.5).monospacedDigit()
                 .lineLimit(1).minimumScaleFactor(0.7)
-            if model.today.active > 0 {
-                Text("\((model.today.ai / model.today.active).formatted(.percent.precision(.fractionLength(0)))) of active time")
-                    .font(.caption).foregroundStyle(.secondary)
-            }
+            HStack {
+                Text("Web + desktop")
+                Spacer()
+                if model.today.active > 0 {
+                    Text("\((model.today.ai / model.today.active).formatted(.percent.precision(.fractionLength(0)))) of active time")
+                }
+            }.font(.caption).foregroundStyle(.secondary)
+                .help("Recognized AI websites and desktop apps combined. Only active foreground time counts.")
         }
         Divider()
         toolRows(model.today.tools, limit: 3)
@@ -120,7 +124,7 @@ struct MenuBarUI: View {
             toolRows(totals)
         }
         Divider()
-        Text("Foreground attention only. Terminal agents need direct evidence to be identified.")
+        Text("Web + desktop, grouped by tool. Foreground time only; background tabs and agents are not counted.")
             .font(.caption).foregroundStyle(.secondary)
     }
 

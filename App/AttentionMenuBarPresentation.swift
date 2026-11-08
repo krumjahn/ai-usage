@@ -20,7 +20,7 @@ struct AttentionMenuBarPresentation {
             detail = "AI Usage · " + problem
         } else {
             title = duration(seconds)
-            detail = "AI attention today: \(duration(seconds)) · \(paused ? "Paused" : status). Recorded foreground time; refreshes every 10 seconds."
+            detail = "AI attention today: \(duration(seconds)) · Web + desktop · \(paused ? "Paused" : status). Recorded foreground time; refreshes every 10 seconds."
         }
     }
 }

@@ -1,3 +1,13 @@
+# Combined web and desktop presentation — 8 November 2026
+
+The analytics already group observations by canonical tool identity. Updated `App/MenuBarUI.swift` to explicitly label the daily metric “Web + desktop” and explain per-tool grouping in All tools. `App/AttentionMenuBarPresentation.swift` includes the same scope in the menu-bar tooltip. Kept the time-only menu-bar label and compact 320pt layout.
+
+Added `testWebAndDesktopCombineByToolWithoutDoubleCounting` in `Tests/PipelineTests.swift`: ChatGPT (both desktop identifiers), Claude and MiniMax each combine desktop/browser observations; overlapping intervals count once; ordinary browsing and idle periods do not count as AI; Codex remains a separate product. No collector, classifier, analytics or database changes.
+
+Verification: same Xcode test/build commands below, with logs in `work/combined-tests.log` and `work/combined-build.log`. All 18 tests, release build and signature verification passed. Verified live dashboard (45m, Web + desktop) and tool-list explanation. All 692 baseline completed history rows were unchanged; SQLite integrity passed.
+
+---
+
 # MiniMax classification fix — 8 November 2026
 
 Added `com.minimax.agent` (verified from the installed MiniMax Code app) and `agent.minimax.io` to classifier version 6, both as **MiniMax Code**. Existing raw desktop observations now contribute to AI analytics without rewriting historical classification evidence. Domains for the company website, developer platform, generated websites, and lookalikes remain unrecognized; terminal foreground time is not inferred to be MiniMax.

@@ -28,6 +28,25 @@ final class PipelineTests: XCTestCase {
         let rows = [Segment(start: 0, end: 20, observation: codex), Segment(start: 15, end: 30, observation: codex)]
         XCTAssertEqual(UsageAnalytics(rows, from: 5, to: 25).active, 20)
     }
+    func testWebAndDesktopCombineByToolWithoutDoubleCounting() {
+        let products = [("ChatGPT", "com.openai.chat", "chatgpt.com"),
+                        ("ChatGPT", "com.openai.codex", "chat.openai.com"),
+                        ("Claude", "com.anthropic.claudefordesktop", "claude.ai"),
+                        ("MiniMax Code", "com.minimax.agent", "agent.minimax.io")]
+        for (name, bundle, domain) in products {
+            let rows = [
+                Segment(start: 0, end: 60, observation: Observation(app: name, bundle: bundle)),
+                Segment(start: 30, end: 90, observation: Observation(app: "Chrome", bundle: "com.google.Chrome", domain: domain)),
+                Segment(start: 90, end: 120, observation: Observation(app: "Chrome", bundle: "com.google.Chrome")),
+                Segment(start: 120, end: 180, observation: .idle),
+                Segment(start: 180, end: 210, observation: codex)
+            ]
+            let report = UsageAnalytics(rows, from: 0, to: 210)
+            XCTAssertEqual(report.tools, [name: 90, "Codex": 30])
+            XCTAssertEqual(report.ai, 120, "Web/desktop overlap must count once")
+            XCTAssertEqual(report.active, 150, "Ordinary browsing is active but not AI")
+        }
+    }
     func testPersistenceRollbackAndErase() throws {
         let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: folder) }
