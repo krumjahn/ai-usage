@@ -3,6 +3,14 @@ import XCTest
 @testable import AttentionLedger
 
 final class MenuBarTimeTests: XCTestCase {
+    func testDashboardOnlyShowsExceptionalCollectionStatus() {
+        for status in ["Tracking", "ChatGPT", "gemini.google.com", "Starting", "Waiting for foreground app"] {
+            XCTAssertNil(CollectionNotice.text(paused: false, status: status))
+            XCTAssertEqual(CollectionNotice.text(paused: true, status: status), "Paused")
+        }
+        XCTAssertEqual(CollectionNotice.text(paused: false, status: "Idle"), "Idle")
+        XCTAssertEqual(CollectionNotice.text(paused: false, status: "Session inactive"), "Session inactive")
+    }
     func testCompactTimeAcrossMinuteAndHourBoundaries() {
         for (seconds, expected) in [(0.0, "0s"), (59.9, "59s"), (60, "1m"),
                                     (3599, "59m"), (3600, "1h 0m"), (7380, "2h 3m")] {

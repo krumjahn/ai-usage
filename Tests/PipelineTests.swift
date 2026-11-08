@@ -153,7 +153,7 @@ extension PipelineTests {
     @MainActor func testDashboardIsDefaultOnEveryPresentation() {
         let nav = DashboardNavigation()
         XCTAssertEqual(nav.page, .dashboard)
-        nav.page = .tools
+        nav.page = .settings
         nav.period = .week
         nav.openDashboard()
         XCTAssertEqual(nav.page, .dashboard)
@@ -191,14 +191,17 @@ extension PipelineTests {
             XCTAssertEqual(model.week.filter { $0.1.ai > 0 }.count, min(span, 7))
             XCTAssertEqual(model.today.ai, span == 0 ? 0 : Double(domains.count * 60))
             for scheme in [ColorScheme.light, .dark] {
-                for page in [DashboardPage.dashboard, .tools, .settings] {
-                    nav.page = page
-                    let view = NSHostingView(rootView: MenuBarUI(model: model, collector: model.collector, nav: nav)
-                        .environment(\.colorScheme, scheme))
-                    let size = view.fittingSize
-                    XCTAssertEqual(size.width, 320, accuracy: 1)
-                    XCTAssertTrue((120...500).contains(size.height), "\(page) height \(size.height)")
-                    if page == .dashboard { XCTAssertLessThanOrEqual(size.height, 410) }
+                for period in ToolPeriod.allCases {
+                    nav.period = period
+                    for page in [DashboardPage.dashboard, .settings] {
+                        nav.page = page
+                        let view = NSHostingView(rootView: MenuBarUI(model: model, collector: model.collector, nav: nav)
+                            .environment(\.colorScheme, scheme))
+                        let size = view.fittingSize
+                        XCTAssertEqual(size.width, 320, accuracy: 1)
+                        XCTAssertTrue((120...500).contains(size.height), "\(page) height \(size.height)")
+                        if page == .dashboard { XCTAssertLessThanOrEqual(size.height, 460) }
+                    }
                 }
             }
         }

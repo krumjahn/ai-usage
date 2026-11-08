@@ -1,3 +1,15 @@
+# One dashboard, all tools — 8 November 2026
+
+- `App/MenuBarUI.swift`: removed the separate All tools route and top-three limit. One Today / 7 days selector now controls the hero, share of active time, total source split, and all tool rows. Every row shows its web/desktop split beneath the tool name; lists over five tools scroll within 190pt. Settings stays behind the gear and preserves the selected period on return. A fresh presentation still defaults to Today; the menu bar continues to show today's total.
+- `App/CollectionNotice.swift`: hides routine collection status, retaining Paused, Idle and Session inactive. Error messages remain visible separately.
+- Tests updated for the simplified navigation, both periods, and compact bounded layout with empty/sparse/multiweek histories in light and dark mode. Added exceptional-status coverage. Core analytics, classifier, collector and storage code are unchanged.
+
+All **21 tests passed**, Release build succeeded, and strict signature verification passed. Used the same Xcode test/build commands below, with logs in `work/unified-tests.log` and `work/unified-build.log`. Live checks confirmed Gemini visible directly on Today, per-tool source subtitles, correct seven-day totals, Settings back-navigation preserving the period, and Paused appearing only while paused. Collection was resumed and the dashboard returned to Today.
+
+All 713 baseline completed history rows are unchanged; SQLite integrity passed. The scrolling layout was covered by isolated multi-tool fixtures; current live data has four tools today and five over seven days. No sleep/wake or permission changes were exercised in this UI-only update.
+
+---
+
 # Minimal web / desktop split — 8 November 2026
 
 - `Core/AttentionSplit.swift` and `Core/UsageAnalytics.swift`: derive per-tool web/desktop seconds from the existing deduplicated foreground intervals. Combined totals now derive from the two sources, so the split and total cannot drift. Browser classification and stored observations are unchanged.

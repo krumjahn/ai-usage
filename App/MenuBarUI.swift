@@ -1,7 +1,7 @@
 import SwiftUI
 
-enum DashboardPage { case dashboard, tools, settings }
-enum ToolPeriod: String, CaseIterable { case today = "Today", week = "Last 7 days" }
+enum DashboardPage { case dashboard, settings }
+enum ToolPeriod: String, CaseIterable { case today = "Today", week = "7 days" }
 
 @MainActor final class DashboardNavigation: ObservableObject {
     @Published var page = DashboardPage.dashboard
@@ -19,15 +19,12 @@ struct MenuBarUI: View {
     @ObservedObject var collector: ActivityCollector
     @ObservedObject var nav: DashboardNavigation
 
-    private var tracking: String {
-        if collector.paused { return "Paused" }
-        if ["Idle", "Session inactive", "Starting", "Waiting for foreground app"].contains(collector.status) {
-            return collector.status
-        }
-        return "Tracking"
+    private var displayedSplits: [String: AttentionSplit] {
+        if nav.period == .today { return model.today.toolSplits }
+        return model.week.reduce(into: [:]) { $0.merge($1.1.toolSplits, uniquingKeysWith: +) }
     }
-    private var weekSplits: [String: AttentionSplit] {
-        model.week.reduce(into: [:]) { $0.merge($1.1.toolSplits, uniquingKeysWith: +) }
+    private var displayedActive: Double {
+        nav.period == .today ? model.today.active : model.week.reduce(0) { $0 + $1.1.active }
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -35,7 +32,6 @@ struct MenuBarUI: View {
             if let problem = model.problem { Text(problem).foregroundStyle(.red).font(.caption) }
             switch nav.page {
             case .dashboard: dashboard
-            case .tools: tools
             case .settings: PrivacySettings(model: model, collector: collector)
             }
         }
@@ -55,11 +51,11 @@ struct MenuBarUI: View {
                 .buttonStyle(.plain).foregroundStyle(.secondary)
                 .accessibilityLabel("Settings").help("Settings")
             } else {
-                Button { nav.openDashboard() } label: {
+                Button { nav.page = .dashboard } label: {
                     Image(systemName: "chevron.left").frame(width: 22, height: 22)
                 }
                 .buttonStyle(.plain).accessibilityLabel("Back to dashboard")
-                Text(nav.page == .tools ? "All tools" : "Settings")
+                Text("Settings")
                     .font(.system(size: 13, weight: .semibold))
                 Spacer()
             }
@@ -67,37 +63,40 @@ struct MenuBarUI: View {
     }
 
     @ViewBuilder private var dashboard: some View {
+        let splits = displayedSplits
+        let combined = splits.values.reduce(AttentionSplit(), +)
+        Picker("Period", selection: $nav.period) {
+            ForEach(ToolPeriod.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+        }.pickerStyle(.segmented).controlSize(.mini).labelsHidden()
         VStack(alignment: .leading, spacing: 3) {
             HStack {
-                Text("AI attention today")
+                Text(nav.period == .today ? "AI attention today" : "AI attention · past 7 days")
                 Spacer()
-                Text(tracking).lineLimit(1)
+                if let notice = CollectionNotice.text(paused: collector.paused, status: collector.status) {
+                    Text(notice).lineLimit(1)
+                }
             }.font(.caption).foregroundStyle(.secondary)
             HStack(alignment: .firstTextBaseline) {
-                Text(duration(model.today.ai))
+                Text(duration(combined.total))
                     .font(.system(size: 36, weight: .medium)).tracking(-1.5).monospacedDigit()
                     .lineLimit(1).minimumScaleFactor(0.7)
                 Spacer()
-                if model.today.active > 0 {
-                    let share = (model.today.ai / model.today.active).formatted(.percent.precision(.fractionLength(0)))
+                if displayedActive > 0 {
+                    let share = (combined.total / displayedActive).formatted(.percent.precision(.fractionLength(0)))
                     Text("\(share) active").font(.caption).foregroundStyle(.secondary)
                         .fixedSize().help("\(share) of all active foreground time")
                         .accessibilityLabel("\(share) of all active foreground time")
                 }
             }
-            AttentionSplitSummary(split: model.today.split)
+            AttentionSplitSummary(split: combined)
         }
         Divider()
-        toolRows(model.today.toolSplits, limit: 3)
-        Button { nav.page = .tools } label: {
-            HStack {
-                Text("All tools")
-                Spacer()
-                Image(systemName: "chevron.right").font(.system(size: 9, weight: .semibold))
-            }.contentShape(Rectangle())
+        if splits.count > 5 {
+            ScrollView { toolRows(splits) }.frame(height: 190)
+                .scrollIndicators(.visible)
+        } else {
+            toolRows(splits)
         }
-        .buttonStyle(.plain).font(.caption).foregroundStyle(.secondary)
-        .accessibilityLabel("All AI Tools")
         Divider()
         AttentionWeek(days: model.week)
         if !collector.sites {
@@ -114,27 +113,7 @@ struct MenuBarUI: View {
         }
     }
 
-    @ViewBuilder private var tools: some View {
-        Picker("Period", selection: $nav.period) {
-            ForEach(ToolPeriod.allCases, id: \.self) { Text($0.rawValue).tag($0) }
-        }.pickerStyle(.segmented).labelsHidden()
-        let splits = nav.period == .today ? model.today.toolSplits : weekSplits
-        let combined = splits.values.reduce(AttentionSplit(), +)
-        VStack(alignment: .leading, spacing: 3) {
-            Text("\(duration(combined.total)) AI attention").font(.headline)
-            AttentionSplitSummary(split: combined)
-        }
-        if splits.count > 6 {
-            ScrollView { toolRows(splits) }.frame(height: 228)
-        } else {
-            toolRows(splits)
-        }
-        Divider()
-        Text("Hover over a tool for its web and desktop split. Foreground time only.")
-            .font(.caption).foregroundStyle(.secondary)
-    }
-
-    @ViewBuilder private func toolRows(_ splits: [String: AttentionSplit], limit: Int = .max) -> some View {
+    @ViewBuilder private func toolRows(_ splits: [String: AttentionSplit]) -> some View {
         let totals = splits.mapValues(\.total)
         let sorted = totals.sorted { (a: (key: String, value: Double), b: (key: String, value: Double)) in
             a.value == b.value ? a.key < b.key : a.value > b.value
@@ -147,13 +126,18 @@ struct MenuBarUI: View {
             }.fixedSize(horizontal: false, vertical: true)
         } else {
             VStack(spacing: 8) {
-                ForEach(Array(sorted.prefix(limit)), id: \.key) { name, seconds in
-                    HStack(spacing: 8) {
+                ForEach(sorted, id: \.key) { name, seconds in
+                    HStack(alignment: .top, spacing: 8) {
                         ToolIcon(name: name)
-                        Text(name).font(.callout).lineLimit(1).truncationMode(.tail)
-                        Spacer(minLength: 8)
-                        Text(duration(seconds)).font(.callout).monospacedDigit()
-                            .foregroundStyle(.secondary).fixedSize()
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack {
+                                Text(name).font(.callout).lineLimit(1).truncationMode(.tail)
+                                Spacer(minLength: 8)
+                                Text(duration(seconds)).font(.callout).monospacedDigit()
+                                    .foregroundStyle(.secondary).fixedSize()
+                            }
+                            AttentionSplitSummary(split: splits[name] ?? AttentionSplit())
+                        }
                     }
                     .contentShape(Rectangle())
                     .accessibilityElement(children: .ignore)
