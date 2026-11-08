@@ -2,18 +2,19 @@ import Foundation
 
 // Registry keys are product surfaces. Unknown browsing discards the host.
 struct AIToolClassifier {
-    static let version = 5
+    static let version = 6
     static let domains = [
         "chatgpt.com": "ChatGPT", "chat.openai.com": "ChatGPT",
         "claude.ai": "Claude", "gemini.google.com": "Gemini", "grok.com": "Grok",
         "perplexity.ai": "Perplexity", "copilot.microsoft.com": "Microsoft Copilot",
         "notebooklm.google.com": "NotebookLM", "aistudio.google.com": "Google AI Studio",
-        "chat.deepseek.com": "DeepSeek", "v0.app": "v0"
+        "chat.deepseek.com": "DeepSeek", "v0.app": "v0",
+        "agent.minimax.io": "MiniMax Code"
     ]
     static let bundles = [
         "com.openai.chat": "ChatGPT", "com.openai.codex": "Codex",
         "com.anthropic.claudefordesktop": "Claude", "com.todesktop.230313mzl4w4u92": "Cursor",
-        "com.exafunction.windsurf": "Windsurf"
+        "com.exafunction.windsurf": "Windsurf", "com.minimax.agent": "MiniMax Code"
     ]
 
     struct DesktopIdentity {

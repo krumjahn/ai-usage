@@ -61,7 +61,7 @@ extension PipelineTests {
         for (host, name) in hosts {
             let match = AIToolClassifier.classify(Observation(app: "Safari", bundle: "com.apple.Safari", domain: host))
             XCTAssertEqual(match.tool, name)
-            XCTAssertEqual(match.version, 5)
+            XCTAssertEqual(match.version, 6)
             XCTAssertEqual(match.evidence, "domain:" + host)
         }
         for (id, name) in [("com.openai.codex","Codex"), ("com.todesktop.230313mzl4w4u92","Cursor"),

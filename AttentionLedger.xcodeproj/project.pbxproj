@@ -12,6 +12,7 @@
 		246887B2EA1ABF5373CFF493 /* AttentionMenuBarPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EEDF694690496BD4F5A132 /* AttentionMenuBarPresentation.swift */; };
 		4AD6D575CC92763C389C5C44 /* BrowserAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83B44B730ECD83BA88AADE /* BrowserAdapter.swift */; };
 		78CE559AE6E38FC20838DC0D /* PipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359DAD2410D10FF1B880657F /* PipelineTests.swift */; };
+		841A61BE43C6A05D1F6BB00E /* MiniMaxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED53E24F6538AF3D1EB5D38 /* MiniMaxTests.swift */; };
 		84D1EA147C57ACA70C7CB07D /* AIToolClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D38624155A0471282F39E635 /* AIToolClassifier.swift */; };
 		87E85BC17E411551FD88AC59 /* MenuBarUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7AE833C48F43D47CB8FBD4 /* MenuBarUI.swift */; };
 		A36F5408AD6CD284A286D5FB /* ActivityCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FF5764827BFF3C1440D5BA /* ActivityCollector.swift */; };
@@ -49,6 +50,7 @@
 		CB7AE833C48F43D47CB8FBD4 /* MenuBarUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarUI.swift; sourceTree = "<group>"; };
 		CF5C09B1B97C7949AAEE7AF9 /* LedgerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LedgerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D38624155A0471282F39E635 /* AIToolClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIToolClassifier.swift; sourceTree = "<group>"; };
+		EED53E24F6538AF3D1EB5D38 /* MiniMaxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMaxTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -66,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				B65F283FC472DA389957CFFD /* MenuBarTimeTests.swift */,
+				EED53E24F6538AF3D1EB5D38 /* MiniMaxTests.swift */,
 				359DAD2410D10FF1B880657F /* PipelineTests.swift */,
 			);
 			path = Tests;
@@ -216,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D37BE06A0152072541C7C65D /* MenuBarTimeTests.swift in Sources */,
+				841A61BE43C6A05D1F6BB00E /* MiniMaxTests.swift in Sources */,
 				78CE559AE6E38FC20838DC0D /* PipelineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

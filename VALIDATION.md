@@ -1,3 +1,11 @@
+# MiniMax classification fix — 8 November 2026
+
+Added `com.minimax.agent` (verified from the installed MiniMax Code app) and `agent.minimax.io` to classifier version 6, both as **MiniMax Code**. Existing raw desktop observations now contribute to AI analytics without rewriting historical classification evidence. Domains for the company website, developer platform, generated websites, and lookalikes remain unrecognized; terminal foreground time is not inferred to be MiniMax.
+
+Verification uses the same Xcode commands below, with logs in `work/minimax-tests.log` and `work/minimax-build.log`. Added tests for desktop/browser recognition, privacy-safe domain normalization, false positives, and retrospective classification with original evidence preserved. No collector or database-schema changes. All 17 tests, release build and signature verification passed. The restarted live dashboard shows MiniMax Code (5m rounded down from about 5m 40s). A read-only hash check confirms all 670 completed baseline history rows are unchanged; SQLite integrity check passed.
+
+---
+
 # Compact monochrome redesign — 8 November 2026
 
 - `App/MenuBarUI.swift`: 320pt panel, smaller typography and spacing, plain time metric, compact icon-and-duration rows, shallow weekly chart, and contextual browser setup. Removed teal cards, gradients, decorative logo, badges, and ranking bars. All tools remains accessible even when today has no data. Settings stays behind the gear; enabled browser identification no longer initially reads “Off”.
