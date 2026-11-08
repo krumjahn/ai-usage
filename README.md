@@ -13,6 +13,8 @@
 
 ## Screenshots and video
 
+Press Play to see AI Usage open from the macOS menu bar.
+
 https://github.com/user-attachments/assets/168d8d7d-3469-4bad-8d5a-297618249d17
 
 [Download the demo MP4](https://github.com/krumjahn/ai-usage/releases/download/v0.1.0-preview/demo.mp4) · [All screenshots](docs/images) · [Mac preview release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview)
