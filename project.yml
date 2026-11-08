@@ -1,0 +1,38 @@
+name: AttentionLedger
+options:
+  deploymentTarget:
+    macOS: '13.0'
+settings:
+  SWIFT_VERSION: '5.0'
+  CODE_SIGN_IDENTITY: '-'
+  CODE_SIGN_STYLE: Manual
+targets:
+  AttentionLedger:
+    type: application
+    platform: macOS
+    sources: [Core, App]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.rumjahn.attentionledger
+    info:
+      path: App/Info.plist
+      properties:
+        LSUIElement: true
+        CFBundleDisplayName: AI Usage
+        CFBundleName: AI Usage
+        NSAppleEventsUsageDescription: Identify supported AI sites in the front browser tab when site tracking is enabled.
+  LedgerTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [Tests]
+    dependencies:
+      - target: AttentionLedger
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.rumjahn.attentionledger.tests
+      GENERATE_INFOPLIST_FILE: YES
+schemes:
+  AttentionLedger:
+    build:
+      targets:
+        AttentionLedger: all
+    test:
+      targets: [LedgerTests]
