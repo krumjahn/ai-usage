@@ -13,9 +13,9 @@
 
 ## Screenshots and video
 
-[![Watch the 14-second AI Usage demo](docs/images/demo-poster.jpg)](docs/media/ai-usage-demo.mp4)
+https://github.com/user-attachments/assets/168d8d7d-3469-4bad-8d5a-297618249d17
 
-[Watch or download the demo](docs/media/ai-usage-demo.mp4) · [All screenshots](docs/images) · [Mac preview release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview)
+[Download the demo MP4](https://github.com/krumjahn/ai-usage/releases/download/v0.1.0-preview/demo.mp4) · [All screenshots](docs/images) · [Mac preview release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview)
 
 <details>
 <summary>Seven-day view and Settings</summary>
