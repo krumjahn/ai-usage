@@ -359,9 +359,6 @@ footer div {
   h1 em {
     color: #bac4a1;
   }
-  .brand img {
-    filter: invert(1);
-  }
   .app-screen {
     outline: 1px solid #ffffff20;
   }
