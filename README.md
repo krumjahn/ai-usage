@@ -13,11 +13,11 @@
 
 ## Screenshots and video
 
-**What’s your most-used AI tool? You might be wrong.** Press Play to see how AI Usage brings your web and desktop time together in the Mac menu bar.
+**Which AI gets your time?** Press Play: zoom into a MacBook’s menu bar, click the timer, and see your desktop and web attention together.
 
-https://github.com/user-attachments/assets/7ef74dfc-19e6-44ae-ac45-056afd9db8e4
+https://github.com/user-attachments/assets/b2db6336-5f23-40a7-8258-9f99b48c04ae
 
-[Download the demo MP4](https://github.com/krumjahn/ai-usage/releases/download/v0.1.0-preview/demo.mp4) · [All screenshots](docs/images) · [Mac preview release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview)
+[Download the demo MP4](https://github.com/krumjahn/ai-usage/releases/download/v0.1.0-preview/ai-usage-laptop-demo.mp4) · [All screenshots](docs/images) · [Mac preview release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.0-preview)
 
 <details>
 <summary>Seven-day view and Settings</summary>
@@ -29,7 +29,7 @@ https://github.com/user-attachments/assets/7ef74dfc-19e6-44ae-ac45-056afd9db8e4
 
 </details>
 
-The screenshots show the real native interface with synthetic records. The 14-second silent demo shows a staged macOS desktop: click the menu-bar time, open the dashboard, then click away. It uses the same sample data. Editable video source is in `promo/`; no website is needed to view or share these assets.
+The screenshots and eight-second landscape demo show the real native interface with synthetic records. The demo uses a 3D MacBook, a staged desktop, and subtle sound effects; sample data is labeled throughout. [Video and asset credits](docs/media/README.md). The earlier 14-second demo and its editable source in `promo/` are preserved.
 
 ## What it does
 
