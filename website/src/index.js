@@ -98,11 +98,9 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/api/health" && request.method === "GET")
       return json({ ok: true });
-    if (url.pathname !== "/api/feedback") {
-      return url.pathname.startsWith("/api/")
-        ? json({ error: "Not found" }, 404)
-        : env.ASSETS.fetch(request);
-    }
+    // Deploy only the feedback API. The marketing website remains unpublished.
+    if (url.pathname !== "/api/feedback")
+      return json({ error: "Not found" }, 404);
     // No public read/export endpoint. Native requests have no Origin.
     if (request.method !== "POST")
       return json({ error: "Method not allowed" }, 405);

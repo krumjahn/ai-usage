@@ -12,7 +12,6 @@ const answer = {
 function fixture({ success = true, fail = false } = {}) {
   const writes = [];
   const env = {
-    ASSETS: { fetch: () => new Response("site") },
     FEEDBACK_LIMITER: { limit: async () => ({ success }) },
     FEEDBACK_DB: {
       prepare(sql) {
@@ -67,7 +66,7 @@ test("explicit JSON submission uses bound values and returns matching receipt", 
   assert.equal(writes[0].values[3], payload.wish);
   assert.ok(!writes[0].sql.includes(payload.wish));
 });
-test("no public response read endpoint; static assets work", async () => {
+test("no public response read endpoint or marketing website", async () => {
   const { env } = fixture();
   assert.equal(
     (await worker.fetch(new Request("https://example.com/api/feedback"), env))
@@ -80,8 +79,8 @@ test("no public response read endpoint; static assets work", async () => {
     404,
   );
   assert.equal(
-    await (await worker.fetch(new Request("https://example.com/"), env)).text(),
-    "site",
+    (await worker.fetch(new Request("https://example.com/"), env)).status,
+    404,
   );
 });
 test("rejects malformed, oversized, cross-origin and non-JSON requests before storage", async () => {

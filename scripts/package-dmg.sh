@@ -52,7 +52,9 @@ foreground time counts; open background tabs and idle time do not.
 
 Your activity stays local. Replacing the app preserves its history.
 This disk image contains no activity data or account credentials.
-The optional feedback service is not connected in this preview.
+The optional questionnaire sends only answers you explicitly submit and app
+version to a private Cloudflare database. Skip sends nothing. Responses are
+kept for 90 days. Activity history is never included.
 
 Source, installation details, and issue reports:
 https://github.com/krumjahn/ai-usage

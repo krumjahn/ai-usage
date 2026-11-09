@@ -1,3 +1,36 @@
+# Live optional feedback — 9 November 2026
+
+Enabled `AIUsageFeedbackEndpoint` in `project.yml` and generated `App/Info.plist`; bumped the app to 0.1.1 (build 2). Collector, classifier, activity storage and analytics sources are unchanged. Updated release, installation and privacy documentation and DMG installation notes. API routing/config now deploy only `ai-usage-feedback`, with no marketing assets and no Worker request logs/traces.
+
+Cloudflare dashboard confirmed **Workers Free / Current plan / $0**. Deployed Worker version `58fda871-dc93-47a4-ab40-a229fd90f87e`, D1 schema `0001_feedback.sql`, and daily cron `17 3 * * *`. Live HTTPS health returned 200; POST returned 201 with the matching random ID; retry plus the app's real Swift URLSession client produced just one row. Public GET `/api/feedback` returned 405; `/api/export` and `/` returned 404. A small burst of malformed requests produced 400 then 429. This limiter is approximate; six initial requests passed before synchronization, as documented by Cloudflare. A Python urllib probe received Cloudflare error 1010; curl and the actual native client succeeded without weakening Cloudflare security.
+
+Validation commands (from repository root; task logs/build artifacts are outside the repository):
+
+```sh
+xcodegen generate
+xcodebuild -scheme AttentionLedger -destination 'platform=macOS' -derivedDataPath ../../work/feedback-build -parallel-testing-enabled NO test
+xcodebuild -scheme AttentionLedger -configuration Release -destination 'generic/platform=macOS' -derivedDataPath ../../work/feedback-build ONLY_ACTIVE_ARCH=NO ARCHS='arm64 x86_64' build
+cd website
+npm test
+npm run types
+npm run check
+npx wrangler deploy --dry-run
+npx wrangler d1 migrations apply FEEDBACK_DB --remote
+npm run deploy
+```
+
+- **24 XCTest cases passed**, including configured one-time onboarding, Skip/no-send, retry identity, failure/success state, payload minimization and URL restrictions.
+- **6 backend tests passed**, including routing, allowed fields, malformed input, rate limiting, write failure and retention SQL. Generated-type checking and deployment dry run passed.
+- Native runtime: upgraded the existing local app after a clean quit, with its prior binary preserved outside the repo. The questionnaire appeared automatically. Skip closed it and D1 still contained zero responses. Settings reopened the form; incomplete answers disabled Send. A clearly labelled disposable UI submission displayed Thank you and was verified in D1 with app version 0.1.1. Done returned to Settings. Restarting showed the dashboard without repeating onboarding. Both disposable test rows were removed by exact IDs; no real responses were deleted.
+- All **1,055 pre-existing closed activity segments** matched the read-only baseline hash after upgrade. The newest coalescing segment was excluded because normal collection may extend it. No activity database migrations or cleanup were performed.
+- Universal arm64/x86_64 Release build and strict code-signature verification passed. Packaged DMG verified with `hdiutil verify`; all six bundled app files matched the release input after a read-only mount. ZIP contains the same app. The local app is running version 0.1.1.
+
+Artifacts: `AI-Usage-0.1.1-preview.dmg` SHA-256 `45e105ce76b4f9f70301a01bf6aef432d4599cdd8078769415589ca465aaf975`; ZIP SHA-256 `ec58ed4427ecfc26e6cff383bf1b363c07aa32023dbe3247f66e6ff53012c686`.
+
+Limitations: ad-hoc signed and unnotarized; runtime checked on this Apple Silicon Mac, not Intel or macOS 13 hardware. Retention SQL is unit-tested and the production cron is registered; a scheduled 90-day deletion has not yet elapsed. Rate limiting is approximate and not bot-proof. Activity history is never part of a feedback submission. The website remains unpublished.
+
+---
+
 # DMG packaging validation — 8 November 2026
 
 Added `scripts/package-dmg.sh`, `scripts/dmg-settings.py` and `docs/RELEASING.md`. Updated README and installation instructions to make the DMG the primary download. Existing app sources, installed binary and activity history are untouched. The release tag stays fixed; the DMG packages the original ZIP's identical app.

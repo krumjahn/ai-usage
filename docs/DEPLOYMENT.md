@@ -6,32 +6,41 @@ The public source, screenshots and video remain available on GitHub. Website sou
 
 When website work resumes, enable Pages with GitHub Actions as the build source, enable the Website workflow, and dispatch it manually. Static asset links are relative, so `/ai-usage/` works. The site does not depend on Cloudflare, collect answers or run analytics.
 
-## Connect private feedback later
+## Live private feedback service
 
-Prerequisites: Node 22+, Cloudflare account with Workers/D1 access, and an authenticated Wrangler CLI. Use the project-pinned Wrangler. Never put account tokens in this repository.
+Deployed on 2026-11-09 to the existing Cloudflare **Workers Free ($0)** account. No plan upgrade was made.
+
+- Worker: `ai-usage-feedback`
+- Endpoint: `https://ai-usage-feedback.rumjahn.workers.dev/api/feedback`
+- D1: `ai-usage-feedback`, binding `FEEDBACK_DB`; database ID is in `website/wrangler.jsonc` (not a credential).
+- Retention cron: `17 3 * * *` (03:17 UTC daily). Responses older than 90 days are removed at the next successful run.
+- This deployment has no static assets or public response-read endpoint. `/` returns 404; the marketing website remains deferred.
+- Worker request logs and traces are disabled. Cloudflare still processes normal connection metadata.
+
+Prerequisites: Node 22+, Cloudflare Workers/D1 access, and an authenticated Wrangler CLI. Use the project-pinned Wrangler. Never put account tokens in this repository.
+
+To update the existing service:
 
 ```sh
 cd website
 npm ci
-npx wrangler login
-npx wrangler d1 create ai-usage-feedback
-```
-
-Replace the all-zero `database_id` in `website/wrangler.jsonc` with the returned D1 ID. Database IDs are configuration, not credentials. Keep `FEEDBACK_DB` as the binding. The guarded deploy script refuses the placeholder configuration.
-
-```sh
+npx wrangler whoami
+# If authentication has expired: npx wrangler login
 npm test
 npm run types
 npm run check
+npx wrangler deploy --dry-run
 npx wrangler d1 migrations apply FEEDBACK_DB --remote
 npm run deploy
 ```
 
-Use the actual HTTPS workers.dev URL printed by deploy. Check `/api/health`; test a clearly labelled disposable feedback submission and verify it in D1 before enabling onboarding. Confirm rate limiting and the daily retention cron in the Cloudflare dashboard. No response read endpoint is exposed.
+For a separate deployment, create your own D1 database with `npx wrangler d1 create <your-database-name>`, use its name and ID in the config, and choose a unique Worker name. Do not point a fork at the project's response database. Database IDs are configuration, not credentials; writes still require your account's authorization. The deploy script rejects an all-zero database ID.
 
-Set `AIUsageFeedbackEndpoint` in `project.yml` to `https://<deployed-host>/api/feedback`, then run `xcodegen generate`, the macOS tests, and a new release build. Keep it empty until a real deployment is verified. The client rejects insecure URLs and redirects; it sends no cookies or activity history. Automatic onboarding is offered only in configured builds, once per local defaults profile. Skip sends nothing; manual feedback is available in Settings.
+Use the HTTPS workers.dev URL printed by deploy. Check `/api/health`, send a clearly labelled disposable feedback submission, and verify its matching ID in D1. Retry the same ID to verify that only one row exists, then remove only those disposable test rows. Check that GET `/api/feedback` returns 405 and `/api/export` returns 404. Verify a 429 response with a small burst of invalid submissions. The limiter is approximate: more than five requests can pass before counters synchronize. Confirm the daily retention cron after deployment; it is not an exact 90-day expiry timer.
 
-If the static site stays on GitHub Pages, the native client can still send to the separate Worker. Its absent Origin is intentional; the API does not enable cross-origin browser forms. The Worker can also host the static site later. Update public privacy notes when the endpoint is enabled.
+`AIUsageFeedbackEndpoint` in `project.yml` is enabled in v0.1.1-preview. After changing it, run `xcodegen generate`, the macOS tests, and a new release build. The client rejects insecure URLs and redirects and sends no cookies or activity history. Automatic onboarding is offered once per local defaults profile when the dashboard is first opened. Skip sends nothing; manual feedback is available in Settings. An existing v0.1.0-preview installation must update to receive this feature.
+
+The native client intentionally sends no Origin header. The API does not enable cross-origin browser forms. Public privacy notes are kept in `website/public/privacy.html` and linked from the README; publishing the website is a separate task.
 
 ## Private response storage
 
@@ -53,6 +62,8 @@ npm ci
 npx wrangler d1 migrations apply FEEDBACK_DB --local
 npm run dev
 ```
+
+This runs the API only. Preview the deferred static website separately from the repository root with `python3 -m http.server 8080 --directory website/public`.
 
 Local Wrangler binds its own development database under `.wrangler/`; it never uses the app's production SQLite file. POST JSON to `/api/feedback` with `id` (UUID v4), `schemaVersion: 1`, `reason`, `useCase`, `wish` and `appVersion`. Enum values are defined in `src/index.js` and `App/FeedbackSubmission.swift`.
 

@@ -1,6 +1,6 @@
 # Package a macOS DMG
 
-The v0.1.0 preview DMG contains the exact universal app already shipped in the ZIP. Its app source has not changed. This packaging does not turn an ad-hoc signature into a Developer ID signature or notarize the application.
+Each release DMG and ZIP must contain the same verified universal app. Packaging does not turn an ad-hoc signature into a Developer ID signature or notarize the application. The original v0.1.0-preview assets remain available unchanged.
 
 ## Prerequisites
 
@@ -11,10 +11,10 @@ python3 -m venv /tmp/ai-usage-dmg-tools
 /tmp/ai-usage-dmg-tools/bin/python -m pip install dmgbuild==1.6.7
 ```
 
-Supply a previously validated Release app, not a running installed bundle. For a new application version, run the README's build/tests first, build with `ONLY_ACTIVE_ARCH=NO`, and verify the binary contains `arm64` and `x86_64`. For the current preview, verify the published ZIP checksum and extract it into a temporary folder with `ditto -x -k`.
+Supply a previously validated Release app, not a running installed bundle. For a new application version, run the README's build/tests first, build with `ONLY_ACTIVE_ARCH=NO`, and verify the binary contains `arm64` and `x86_64`. For packaging-only updates, verify the published ZIP checksum and extract it into a temporary folder with `ditto -x -k`.
 
 ```sh
-DMGBUILD_BIN=/tmp/ai-usage-dmg-tools/bin/dmgbuild scripts/package-dmg.sh "/path/to/AI Usage.app" release/AI-Usage-0.1.0-preview.dmg
+DMGBUILD_BIN=/tmp/ai-usage-dmg-tools/bin/dmgbuild scripts/package-dmg.sh "/path/to/AI Usage.app" release/AI-Usage-0.1.1-preview.dmg
 ```
 
 The script verifies the bundle identity, signature, and both architectures; copies it into an isolated temporary directory; creates a compressed, read-only HFS+ disk image with an Applications shortcut, Finder layout, installation notes, and license; verifies the disk image; and prints its SHA-256. It refuses to overwrite an existing output. It never installs, launches or re-signs the app.
@@ -26,7 +26,7 @@ Mount the result read-only with `hdiutil attach -readonly -nobrowse`. Verify the
 From `release/`, regenerate the checksum manifest:
 
 ```sh
-shasum -a 256 AI-Usage-0.1.0-preview.dmg AI-Usage-0.1.0-preview.zip > SHA256SUMS.txt
+shasum -a 256 AI-Usage-0.1.1-preview.dmg AI-Usage-0.1.1-preview.zip > SHA256SUMS.txt
 ```
 
 Upload the DMG and refreshed manifest to the matching release, and link the DMG in the README and release notes. Verify the remote asset size and digest after upload. Keep the ZIP, release tag and existing app unchanged for a packaging-only update. A new application version requires a new version/tag and checksums.

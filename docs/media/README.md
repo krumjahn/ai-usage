@@ -6,7 +6,7 @@ The earlier [ai-usage-demo.mp4](ai-usage-demo.mp4) is preserved; its editable so
 
 ## Screenshots and embedding
 
-[Native app screenshots](../images) include the light/dark dashboard, seven-day view, Settings, and optional feedback form. The screenshot generator is `scripts/screenshots.sh`; it uses synthetic records in a temporary database. The feedback form remains inactive until its service is connected.
+[Native app screenshots](../images) include the light/dark dashboard, seven-day view, Settings, and optional feedback form. The screenshot generator is `scripts/screenshots.sh`; it uses synthetic records in a temporary database. The optional feedback form is connected in v0.1.1-preview.
 
 The repository README uses GitHub’s `user-attachments` video URL for native playback controls. To replace the video, upload the approved MP4 through GitHub’s Markdown attachment control and update that URL. A relative repository-file link only navigates to the file. Keep the versioned MP4 and release download as portable copies.
 
