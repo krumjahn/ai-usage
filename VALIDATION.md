@@ -1,3 +1,23 @@
+# Automatic launch onboarding — 9 November 2026
+
+Version 0.1.2 (build 3) opens the dashboard and welcome questionnaire automatically when eligible, without a menu-bar click. `App/Entry.swift` checks `FeedbackModel.shouldOfferOnboarding` after activating the model. `App/FeedbackModel.swift` uses a versioned `feedback.onboarding.offered.v2` flag so existing users also get this welcome once, and tracks onboarding separately from manually opened feedback. `App/FeedbackView.swift` adds the welcome copy and Skip and start / Send and start actions. Confirmed submission enters the dashboard; failures keep the form open. `App/MenuBarUI.swift` includes the previously requested contact email link.
+
+Added two lifecycle tests in `Tests/FeedbackTests.swift` for first-launch eligibility, upgrades from the old flag, cross-launch persistence, manual reopening, no-send on skip, and failure/success transitions. All **26 macOS tests passed**. Built the universal arm64/x86_64 release with ad-hoc signing, targeting macOS 13. Commands:
+
+```sh
+xcodegen generate
+xcodebuild -scheme AttentionLedger -destination 'platform=macOS' -derivedDataPath ../../work/feedback-build -parallel-testing-enabled NO test
+xcodebuild -scheme AttentionLedger -configuration Release -destination 'generic/platform=macOS' -derivedDataPath ../../work/feedback-build ONLY_ACTIVE_ARCH=NO ARCHS='arm64 x86_64' build
+```
+
+Manual verification: quit the prior local app cleanly, preserve its binary outside the repo, install and launch 0.1.2 with no dashboard argument. The welcome sheet appeared immediately. Send was disabled with incomplete answers. Skip and start opened the dashboard. Quit/relaunch and reopening the dashboard did not repeat onboarding. Actual native screenshot: `docs/images/onboarding.png`. The live transport and D1 receipt checks from 0.1.1 remain applicable; this change does not alter payloads or the feedback service. The new send-to-dashboard transition and network failure behavior were checked in tests, not by another live form submission.
+
+Mounted the new DMG read-only; all bundled app files match the built app, and strict signature verification passed. DMG SHA-256: `f41c14cf0ef5b7fb7d3f5868fb85bca182cd0ecb2b70100c553877c699cbc4e8`. ZIP SHA-256: `5881c61b167e7dfc8f1a341da6c306297fce1f76554eaee421fedf62cebe01d5`. Pre-existing closed history records match the read-only baseline hash. Collector, classifier, local database and analytics code are unchanged.
+
+Existing users must install the new release to receive this flow; there is no automatic updater. Builds without a configured feedback service do not show it. Closing the welcome window counts as dismissing the offer. The preview remains unnotarized; runtime testing was on Apple Silicon, not Intel or macOS 13 hardware. The questionnaire retains its existing three questions; the proposed peer-comparison, data-sharing and iPhone questions are not part of this change.
+
+---
+
 # Live optional feedback — 9 November 2026
 
 Enabled `AIUsageFeedbackEndpoint` in `project.yml` and generated `App/Info.plist`; bumped the app to 0.1.1 (build 2). Collector, classifier, activity storage and analytics sources are unchanged. Updated release, installation and privacy documentation and DMG installation notes. API routing/config now deploy only `ai-usage-feedback`, with no marketing assets and no Worker request logs/traces.

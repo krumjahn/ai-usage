@@ -6,7 +6,7 @@ AI Usage supports macOS 13+. The release archive states its supported processor 
 
 <img src="images/installer.png" width="560" alt="AI Usage disk image with the app and an Applications shortcut">
 
-1. Download [AI-Usage-0.1.1-preview.dmg](https://github.com/krumjahn/ai-usage/releases/download/v0.1.1-preview/AI-Usage-0.1.1-preview.dmg) from the [GitHub release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.1-preview). The same DMG supports Apple Silicon and Intel.
+1. Download [AI-Usage-0.1.2-preview.dmg](https://github.com/krumjahn/ai-usage/releases/download/v0.1.2-preview/AI-Usage-0.1.2-preview.dmg) from the [GitHub release](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.2-preview). The same DMG supports Apple Silicon and Intel.
 2. Open the DMG and drag **AI Usage.app** onto **Applications**. Quit any running AI Usage instance before replacing it.
 3. Eject the disk image, then open **AI Usage** from Applications.
 4. This preview is ad-hoc signed, **not Developer ID signed or notarized**. macOS may block it. If you trust this project and want to proceed, follow [Apple's per-app approval instructions](https://support.apple.com/en-us/102445): after trying to open it, go to **System Settings → Privacy & Security → Open Anyway** and confirm the app. Do not disable Gatekeeper system-wide. You can also build from source below.
@@ -14,10 +14,10 @@ AI Usage supports macOS 13+. The release archive states its supported processor 
 For integrity verification, download `SHA256SUMS.txt` from the same release and compare:
 
 ```sh
-shasum -a 256 AI-Usage-0.1.1-preview.dmg
+shasum -a 256 AI-Usage-0.1.2-preview.dmg
 ```
 
-The ZIP remains available as an alternative: download `AI-Usage-0.1.1-preview.zip`, check its checksum, unzip, then move the app to Applications. Both packages contain the same app, with no personal activity history or credentials.
+The ZIP remains available as an alternative: download `AI-Usage-0.1.2-preview.zip`, check its checksum, unzip, then move the app to Applications. Both packages contain the same app, with no personal activity history or credentials.
 
 ## Source build
 
@@ -35,4 +35,6 @@ It only records the foreground app and recognized site. Having an AI app or tab 
 
 Keep bundle identifier `com.rumjahn.attentionledger` and its application support directory to preserve existing history. Quit before replacing a build. Removing the app bundle does not remove your local activity database. Use Settings → Export JSON for a copy, or Delete history for explicit removal. Device backups and exported copies are separate.
 
-In v0.1.1-preview, three optional questions appear once when you first open the dashboard. Skip sends nothing. Reopen the form under Settings → Help shape AI Usage. Submitted answers go to a private Cloudflare database for up to 90 days, plus the daily cleanup interval; activity history stays local. No provider credentials or subscription connections are used.
+In v0.1.2-preview, a welcome questionnaire opens automatically on first launch. Existing users also see it once after updating. **Skip and start** opens the dashboard without sending anything; **Send and start** submits answers and opens the dashboard. Later launches do not repeat onboarding. Reopen the form under Settings → Help shape AI Usage. Submitted answers go to a private Cloudflare database for up to 90 days, plus the daily cleanup interval; activity history stays local. No provider credentials or subscription connections are used.
+
+Contact the maintainer through **Settings → Contact us · keith@rumjahn.com**. This opens your email app; AI Usage does not send an email automatically.

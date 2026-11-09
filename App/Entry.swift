@@ -41,7 +41,10 @@ import SwiftUI
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: MenuBarUI(model: model, collector: model.collector, nav: menuNavigation))
         model.start()
-        if CommandLine.arguments.contains("--dashboard") { showDashboard() }
+        // A menu-bar-only launch must not hide the first-run questionnaire.
+        if model.feedback.shouldOfferOnboarding || CommandLine.arguments.contains("--dashboard") {
+            showDashboard()
+        }
     }
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         showDashboard()

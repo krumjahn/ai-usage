@@ -3,6 +3,7 @@ import Combine
 
 @MainActor final class FeedbackModel: ObservableObject {
     @Published var isPresented = false
+    @Published private(set) var isOnboarding = false
     @Published var reason: FeedbackReason?
     @Published var useCase: FeedbackUseCase?
     @Published var wish = ""
@@ -14,8 +15,12 @@ import Combine
     private let version: String
     private var automaticOfferEnabled = false
     private var pending: FeedbackSubmission?
-    static let offeredKey = "feedback.onboarding.offered.v1"
+    // A new offer for the launch-first flow, including upgrades from the dashboard-only form.
+    static let offeredKey = "feedback.onboarding.offered.v2"
     var isConfigured: Bool { client.isConfigured }
+    var shouldOfferOnboarding: Bool {
+        automaticOfferEnabled && isConfigured && !isPresented && !defaults.bool(forKey: Self.offeredKey)
+    }
     var canSubmit: Bool { isConfigured && reason != nil && useCase != nil && wish.unicodeScalars.count <= 500 && !sending && !submitted }
 
     init(defaults: UserDefaults = .standard, client: any FeedbackSending = FeedbackClient(),
@@ -26,12 +31,13 @@ import Combine
     }
     func activate() { automaticOfferEnabled = true }
     func presentIfNeeded() {
-        guard automaticOfferEnabled, isConfigured, !defaults.bool(forKey: Self.offeredKey) else { return }
-        present()
+        guard shouldOfferOnboarding else { return }
+        present(asOnboarding: true)
     }
-    func present() {
+    func present(asOnboarding: Bool = false) {
         guard !sending else { return }
         if isConfigured { defaults.set(true, forKey: Self.offeredKey) }
+        isOnboarding = asOnboarding
         reason = nil; useCase = nil; wish = ""; problem = nil; submitted = false; pending = nil
         isPresented = true
     }
@@ -50,6 +56,7 @@ import Combine
             try await client.send(pending)
             try Task.checkCancellation()
             submitted = true
+            if isOnboarding { isPresented = false }
         } catch is CancellationError {
             // Closing the sheet cancels the attempt without background retries.
         } catch { problem = error.localizedDescription }

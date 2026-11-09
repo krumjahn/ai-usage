@@ -5,7 +5,7 @@ struct FeedbackView: View {
     @State private var sendTask: Task<Void, Never>?
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text(model.submitted ? "Thank you." : "Help shape AI Usage")
+            Text(model.submitted ? "Thank you." : model.isOnboarding ? "Welcome to AI Usage" : "Help shape AI Usage")
                 .font(.title2.weight(.semibold))
             if model.submitted {
                 Text("Your answers will help decide what comes next.").foregroundStyle(.secondary)
@@ -16,7 +16,10 @@ struct FeedbackView: View {
                 Link("Share an idea on GitHub", destination: URL(string: "https://github.com/krumjahn/ai-usage/issues/new/choose")!)
                 Button("Done") { model.isPresented = false }
             } else {
-                Text("Three quick questions. Completely optional.").foregroundStyle(.secondary)
+                Text(model.isOnboarding
+                     ? "See where your AI time goes. Answer three quick questions, or skip straight to your dashboard."
+                     : "Three quick questions. Completely optional.")
+                    .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
                 VStack(alignment: .leading, spacing: 6) {
                     Text("What brought you here?").font(.callout.weight(.medium))
                     Picker("What brought you here?", selection: $model.reason) {
@@ -43,10 +46,10 @@ struct FeedbackView: View {
                     .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
                 if let problem = model.problem { Text(problem).font(.caption).foregroundStyle(.red) }
                 HStack {
-                    Button("Skip") { sendTask?.cancel(); model.isPresented = false }.keyboardShortcut(.cancelAction)
+                    Button(model.isOnboarding ? "Skip and start" : "Skip") { sendTask?.cancel(); model.isPresented = false }.keyboardShortcut(.cancelAction)
                     Spacer()
                     if model.sending { ProgressView().controlSize(.small) }
-                    Button(model.sending ? "Sending…" : "Send feedback") {
+                    Button(model.sending ? "Sending…" : model.isOnboarding ? "Send and start" : "Send feedback") {
                         sendTask = Task { await model.submit() }
                     }.disabled(!model.canSubmit).keyboardShortcut(.defaultAction)
                 }

@@ -246,6 +246,8 @@ struct PrivacySettings: View {
             }
             Divider()
             Button("Help shape AI Usage…") { model.feedback.present() }.buttonStyle(.link)
+            Link("Contact us · keith@rumjahn.com", destination: URL(string: "mailto:keith@rumjahn.com")!)
+                .accessibilityLabel("Contact us at keith@rumjahn.com")
             Button("Quit AI Usage") { NSApplication.shared.terminate(nil) }.buttonStyle(.link)
         }.controlSize(.small).fixedSize(horizontal: false, vertical: true)
         .alert("Delete AI Usage history?", isPresented: $confirming) {

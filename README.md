@@ -2,7 +2,7 @@
 
 **A little clarity for your AI day.** A small, native Mac menu-bar app that brings your AI attention together—across desktop apps and websites.
 
-[Download for macOS (.dmg)](https://github.com/krumjahn/ai-usage/releases/download/v0.1.1-preview/AI-Usage-0.1.1-preview.dmg) · [Release notes](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.1-preview) · [Suggest an idea](https://github.com/krumjahn/ai-usage/issues/new/choose)
+[Download for macOS (.dmg)](https://github.com/krumjahn/ai-usage/releases/download/v0.1.2-preview/AI-Usage-0.1.2-preview.dmg) · [Release notes](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.2-preview) · [Suggest an idea](https://github.com/krumjahn/ai-usage/issues/new/choose)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/dashboard-dark.png">
@@ -45,7 +45,7 @@ This measures **active foreground attention**, not tokens, subscription allowanc
 
 ## Try it
 
-macOS 13 or later. The [v0.1.1 preview](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.1-preview) is an **ad-hoc signed, unnotarized developer preview**, not a Developer ID release. macOS may block downloaded builds. Download the universal DMG, drag **AI Usage.app** to **Applications**, eject the disk image, and open the app. See [installation notes](docs/INSTALL.md) for macOS approval steps or building from source.
+macOS 13 or later. The [v0.1.2 preview](https://github.com/krumjahn/ai-usage/releases/tag/v0.1.2-preview) is an **ad-hoc signed, unnotarized developer preview**, not a Developer ID release. macOS may block downloaded builds. Download the universal DMG, drag **AI Usage.app** to **Applications**, eject the disk image, and open the app. See [installation notes](docs/INSTALL.md) for macOS approval steps or building from source.
 
 Launch the app and look for a time such as `0s` or `42m` in the macOS menu bar. Click it to open the dashboard. If the menu bar is crowded, close another menu-bar utility temporarily. Opening AI Usage again also opens its dashboard window.
 
@@ -69,7 +69,7 @@ Quit any running AI Usage instance before launching a second build. Two collecto
 
 Activity stays at `~/Library/Application Support/com.rumjahn.attentionledger/activity.sqlite`. The bundle ID and support directory are stable so upgrades preserve history. No prompts, source code, window titles, full URLs, page contents or unrecognized website domains are saved.
 
-The optional three-question feedback sheet sends only explicitly submitted answers and app version, plus a random submission ID and form version. It never sends activity history. **Starting with v0.1.1-preview, the questionnaire is offered once when you first open the dashboard.** Skip sends nothing. You can reopen it in Settings → Help shape AI Usage. Submitted responses are privately stored in Cloudflare D1 and removed by a daily 90-day retention job. [Privacy details](website/public/privacy.html) · [Deployment instructions](docs/DEPLOYMENT.md).
+The optional three-question feedback sheet sends only explicitly submitted answers and app version, plus a random submission ID and form version. It never sends activity history. **Starting with v0.1.2-preview, a welcome questionnaire opens automatically on first launch—even if you never click the menu bar.** Choose **Skip and start** to go straight to the dashboard without sending anything, or **Send and start** to submit your answers. Existing users also see this new welcome once after updating; subsequent launches stay in the menu bar. You can reopen it in Settings → Help shape AI Usage. Submitted responses are privately stored in Cloudflare D1 and removed by a daily 90-day retention job. [Welcome screen](docs/images/onboarding.png) · [Privacy details](website/public/privacy.html) · [Deployment instructions](docs/DEPLOYMENT.md).
 
 ## Inside the repository
 

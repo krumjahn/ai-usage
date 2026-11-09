@@ -14,6 +14,53 @@ private actor FeedbackStub: FeedbackSending {
 }
 
 final class FeedbackTests: XCTestCase {
+    @MainActor func testOnboardingStartsDashboardOnlyAfterConfirmedSubmission() async {
+        let suite = "feedback-tests-\(UUID())"
+        let defaults = UserDefaults(suiteName: suite)!
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let client = FeedbackStub()
+        let model = FeedbackModel(defaults: defaults, client: client)
+        model.activate(); model.presentIfNeeded()
+        model.reason = .curious; model.useCase = .other
+        await client.setFailure(true)
+        await model.submit()
+        XCTAssertTrue(model.isPresented)
+        XCTAssertNotNil(model.problem)
+        await client.setFailure(false)
+        await model.submit()
+        XCTAssertTrue(model.submitted)
+        XCTAssertFalse(model.isPresented)
+    }
+
+    @MainActor func testLaunchOnboardingIsEligibleBeforeDashboardAndPersistsAcrossRestarts() async {
+        let suite = "feedback-tests-\(UUID())"
+        let defaults = UserDefaults(suiteName: suite)!
+        defer { defaults.removePersistentDomain(forName: suite) }
+        // Users of the old dashboard-only questionnaire get the new welcome once.
+        defaults.set(true, forKey: "feedback.onboarding.offered.v1")
+        let client = FeedbackStub()
+        let firstLaunch = FeedbackModel(defaults: defaults, client: client)
+        XCTAssertFalse(firstLaunch.shouldOfferOnboarding)
+        firstLaunch.activate()
+        XCTAssertTrue(firstLaunch.shouldOfferOnboarding)
+        firstLaunch.presentIfNeeded()
+        XCTAssertTrue(firstLaunch.isPresented)
+        XCTAssertTrue(firstLaunch.isOnboarding)
+        XCTAssertFalse(firstLaunch.shouldOfferOnboarding)
+        firstLaunch.isPresented = false // Skip, Escape or closing the welcome window.
+
+        let nextLaunch = FeedbackModel(defaults: defaults, client: client)
+        nextLaunch.activate()
+        XCTAssertFalse(nextLaunch.shouldOfferOnboarding)
+        nextLaunch.presentIfNeeded()
+        XCTAssertFalse(nextLaunch.isPresented)
+        nextLaunch.present() // Settings remains available without repeating the welcome.
+        XCTAssertTrue(nextLaunch.isPresented)
+        XCTAssertFalse(nextLaunch.isOnboarding)
+        let values = await client.values
+        XCTAssertTrue(values.isEmpty)
+    }
+
     @MainActor func testOnlyConfiguredActivatedBuildOffersOnceAndSkipSendsNothing() async {
         let suite = "feedback-tests-\(UUID())"
         let defaults = UserDefaults(suiteName: suite)!

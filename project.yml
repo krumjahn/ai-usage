@@ -18,8 +18,8 @@ targets:
       path: App/Info.plist
       properties:
         LSUIElement: true
-        CFBundleShortVersionString: "0.1.1"
-        CFBundleVersion: "2"
+        CFBundleShortVersionString: "0.1.2"
+        CFBundleVersion: "3"
         AIUsageFeedbackEndpoint: "https://ai-usage-feedback.rumjahn.workers.dev/api/feedback"
         CFBundleDisplayName: AI Usage
         CFBundleName: AI Usage
